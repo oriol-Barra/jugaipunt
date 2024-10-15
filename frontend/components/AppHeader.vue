@@ -21,6 +21,11 @@
               Contacte
             </nuxt-link>
           </li>
+          <li>
+            <nuxt-link to="/tournaments" class="hover:underline">
+              Tornejos
+            </nuxt-link>
+          </li>
         </ul>
       </nav>
       <div class="flex space-x-4">
