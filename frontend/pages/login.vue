@@ -53,6 +53,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   data () {
     return {
@@ -61,11 +63,16 @@ export default {
     }
   },
   methods: {
-    submit () {
-      this.loginWithMail(this.email, this.password)
-    },
-    loginWithMail (email, password) {
-      alert('Login with Mail')
+    async submit () {
+      try {
+        const response = await axios.post('/api/auth/login', {
+          email: this.email,
+          password: this.password
+        })
+        console.log('Login successful:', response.data)
+      } catch (error) {
+        console.error('Error logging in:', error)
+      }
     },
     loginWithGoogle () {
       alert('Login with Google')
