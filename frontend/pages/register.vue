@@ -84,15 +84,14 @@
         </button>
       </form>
     </div>
-   </div>
-  
+  </div>
 </template>
 
 <script>
 
-import axios from 'axios' //Importa Axios para realizar solicituds
+import axios from 'axios' // Importa Axios para realizar solicituds
 
-//afegir aqui validacio de que password = passwordRepeat
+// afegir aqui validacio de que password = passwordRepeat
 
 export default {
 
@@ -114,14 +113,13 @@ export default {
           nom: this.name,
           cognoms: this.cognoms,
           edat: this.edad
-          })
+        })
 
         if (response.status === 201) {
           alert('Jugador registrat amb èxit!')
-          
         }
       } catch (error) {
-        console.error('Error per consola:', error.response?.data || error.message) //revisar error si ja existeix
+        console.error('Error per consola:', error.response?.data || error.message) // revisar error si ja existeix
         alert(`Ha ocurrido un error al registrar el jugador: ${error.response?.data.error || error.message}`)
       }
     }

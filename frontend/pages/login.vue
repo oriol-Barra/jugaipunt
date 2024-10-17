@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex flex-col justify-center items-center bg-cover" style="background-image: url('./assets/background.jpg');"">
+  <div class="min-h-screen flex flex-col justify-center items-center bg-cover">
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
       <h1 class="text-3xl font-bold mb-8 text-center">
         Iniciar Sessió

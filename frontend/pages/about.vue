@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
+  <div class="min-h-screen flex flex-col justify-center items-center">
     <section class="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl mt-4">
       <h1 class="text-4xl text-center mt-4 mb-8">
         Sobre nosaltres

@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex flex-col justify-center items-center bg-cover" style="background-image: url('./assets/background.jpg');">
+  <div class="min-h-screen flex flex-col justify-center items-center bg-cover">
     <div class="bg-white p-8 rounded-lg shadow-lg text-center max-w-2xl">
       <h1 class="text-4xl font-bold mb-4">
         Jugar i Punt!
