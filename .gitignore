@@ -1,8 +1,8 @@
 **/.nuxt
 **/.eslintcache
 **/node_modules
-backend/src/settings.py
 pgdata
 docker-compose.yml
 dockerfile
 frontend/dockerfile
+backend/src/settings.py
