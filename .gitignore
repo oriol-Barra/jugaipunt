@@ -1,7 +1,7 @@
 **/.nuxt
 **/.eslintcache
 **/node_modules
-pgdata
+pgdata/
 docker-compose.yml
 dockerfile
 frontend/dockerfile
