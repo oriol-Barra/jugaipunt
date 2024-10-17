@@ -1,0 +1,5 @@
+Django==5.1.1
+psycopg2==2.9.9  # Canvia a la versió estàndard
+djangorestframework
+django-cors-headers
+
