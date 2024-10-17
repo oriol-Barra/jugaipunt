@@ -1,5 +1,9 @@
 <template>
+<<<<<<< HEAD
   <div class="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
+=======
+  <div class="min-h-screen flex flex-col justify-center items-center">
+>>>>>>> 617f78435f24004d42f23754e0c7f5dbdb9d2289
     <section class="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
       <h1 class="text-4xl text-center mt-8 mb-8">
         Contacte

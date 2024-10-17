@@ -21,24 +21,31 @@
               Contacte
             </nuxt-link>
           </li>
-          <li>
-            <nuxt-link to="/tournaments" class="hover:underline">
-              Tornejos
-            </nuxt-link>
-          </li>
         </ul>
       </nav>
       <div class="flex space-x-4">
-        <nuxt-link to="/register">
-          <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
-            Registre
+        <template v-if="isAuthenticated">
+          <nuxt-link to="/profile">
+            <button class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700">
+              Perfil
+            </button>
+          </nuxt-link>
+          <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700" @click="logout">
+            Logout
           </button>
-        </nuxt-link>
-        <nuxt-link to="/login">
-          <button class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700">
-            Iniciar Sessió
-          </button>
-        </nuxt-link>
+        </template>
+        <template v-else>
+          <nuxt-link to="/register">
+            <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
+              Registre
+            </button>
+          </nuxt-link>
+          <nuxt-link to="/login">
+            <button class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700">
+              Iniciar Sessió
+            </button>
+          </nuxt-link>
+        </template>
       </div>
     </div>
   </header>

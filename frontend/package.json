@@ -5,7 +5,10 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+<<<<<<< HEAD
     "start": "nuxt start",
+=======
+>>>>>>> 617f78435f24004d42f23754e0c7f5dbdb9d2289
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
