@@ -30,7 +30,10 @@
               Perfil
             </button>
           </nuxt-link>
-          <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700" @click="logout">
+          <button
+            class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700"
+            @click="logout"
+          >
             Logout
           </button>
         </template>
@@ -53,7 +56,32 @@
 
 <script>
 export default {
-  name: 'AppHeader'
+  name: 'AppHeader',
+  data () {
+    return {
+      isAuthenticated: false // Estat per verificar si l'usuari està autenticat
+    }
+  },
+  mounted () {
+    this.checkAuthentication() // Comprova l'autenticació en muntar el component
+  },
+  methods: {
+    checkAuthentication () {
+      // Comprovar si existeix el token a localStorage
+      const token = localStorage.getItem('authToken')
+      this.isAuthenticated = !!token // Assignar true o false segons existeixi el token
+    },
+    logout () {
+      // Eliminar el token de localStorage
+      localStorage.removeItem('authToken')
+
+      // Actualitzar l'estat per ocultar el botó de "Logout"
+      this.isAuthenticated = false
+
+      // Redirigir a la pàgina d'inici de sessió o a una altra pàgina
+      this.$router.push('/login')
+    }
+  }
 }
 </script>
 

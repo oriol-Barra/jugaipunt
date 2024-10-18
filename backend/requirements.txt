@@ -1,8 +1,5 @@
 Django==5.1.1
 psycopg2==2.9.9  # Canvia a la versió estàndard
 djangorestframework
-<<<<<<< HEAD
 django-cors-headers
 
-=======
->>>>>>> 617f78435f24004d42f23754e0c7f5dbdb9d2289

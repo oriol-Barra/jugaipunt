@@ -123,8 +123,7 @@ export default {
           document.getElementById('formulariregistre').reset()
         }
       } catch (error) {
-        console.error('Jugador existent:', error.response?.data || error.message)
-        alert(`Ha ocurrido un error al registrar el jugador: ${error.response?.data.error || error.message}`)
+        alert(`Error de registre: ${error.response?.data.error || error.message}`)
       }
     }
   }

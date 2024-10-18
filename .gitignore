@@ -1,12 +1,8 @@
 **/.nuxt
 **/.eslintcache
-<<<<<<< HEAD
 **/node_modules
 pgdata/
 docker-compose.yml
 dockerfile
 frontend/dockerfile
 backend/src/settings.py
-=======
-**/node_modules
->>>>>>> 617f78435f24004d42f23754e0c7f5dbdb9d2289

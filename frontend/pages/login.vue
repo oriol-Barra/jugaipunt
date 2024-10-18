@@ -70,8 +70,18 @@ export default {
           contrasenya: this.password
         })
         if (response.status === 200) {
+          const token = response.data.token
+
+          // Guardar el token en LocalStorage
+          localStorage.setItem('authToken', token)
           alert(`Benvingut/da: ${response.data.message}`)
-          // Aquí puedes agregar lógica para redirigir o limpiar el formulario
+
+          // Netegem els camps del formulari
+          this.email = ''
+          this.password = ''
+
+          // Recarregar la pàgina
+          location.reload()
         }
       } catch (error) {
         const errorMessage = error.response?.data?.error || error.message
@@ -80,7 +90,6 @@ export default {
     }
   }
 }
-
 </script>
 
 <style scoped>
