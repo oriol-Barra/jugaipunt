@@ -65,20 +65,20 @@ export default {
   methods: {
     async submit () {
       try {
-        const response = await axios.post('/api/auth/login', {
+        const baseURL = process.env.API_BASE_URL || 'http://localhost:3000'
+        await axios.post(`${baseURL}/api/auth/login`, {
           email: this.email,
           password: this.password
         })
-        console.log('Login successful:', response.data)
       } catch (error) {
         console.error('Error logging in:', error)
       }
     },
     loginWithGoogle () {
-      alert('Login with Google')
+      // Implement Google login
     },
     loginWithFacebook () {
-      alert('Login with Facebook')
+      // Implement Facebook login
     }
   }
 }

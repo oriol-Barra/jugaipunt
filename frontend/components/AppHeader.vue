@@ -67,7 +67,8 @@ export default {
   methods: {
     async checkAuth () {
       try {
-        const response = await axios.get('/api/auth/check')
+        const baseURL = process.env.API_BASE_URL || 'http://localhost:3000'
+        const response = await axios.get(`${baseURL}/api/auth/check`)
         this.isAuthenticated = response.data.isAuthenticated
       } catch (error) {
         console.error('Error checking authentication:', error)
@@ -75,7 +76,8 @@ export default {
     },
     async logout () {
       try {
-        await axios.post('/api/auth/logout')
+        const baseURL = process.env.API_BASE_URL || 'http://localhost:3000'
+        await axios.post(`${baseURL}/api/auth/logout`)
         this.isAuthenticated = false
       } catch (error) {
         console.error('Error logging out:', error)

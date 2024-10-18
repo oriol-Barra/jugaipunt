@@ -1,10 +1,10 @@
 <template>
-  <div class="min-h-screen flex flex-col justify-center items-center bg-cover" style="background-image: url('./assets/background.jpg'); ">
+  <div class="min-h-screen flex flex-col justify-center items-center bg-cover">
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
       <h1 class="text-3xl font-bold mb-8 text-center">
         Alta de nou usuari
       </h1>
-      <form @submit.prevent="submit">
+      <form id="formulariregistre" @submit.prevent="submit">
         <div class="mb-4">
           <label class="block text-gray-700" for="email">Email</label>
           <input
@@ -29,22 +29,22 @@
         </div>
 
         <div class="mb-4">
-          <label class="block text-gray-700" for="password">Repeteix contrasenya</label>
+          <label class="block text-gray-700" for="passwordRepeat">Repeteix contrasenya</label>
           <input
             id="passwordRepeat"
             v-model="passwordRepeat"
             class="form-input mt-1 block w-full h-12 rounded px-4 border border-gray-300"
             type="password"
             required
-            placeholder=" Repeteix contrasenya"
+            placeholder="Repeteix contrasenya"
           >
         </div>
 
         <div class="mb-4">
-          <label class="block text-gray-700" for="password">Nom</label>
+          <label class="block text-gray-700" for="nom">Nom</label>
           <input
             id="nom"
-            v-model="textarea"
+            v-model="nom"
             class="form-input mt-1 block w-full h-12 rounded px-4 border border-gray-300"
             type="text"
             required
@@ -53,10 +53,10 @@
         </div>
 
         <div class="mb-4">
-          <label class="block text-gray-700" for="password">Cognoms</label>
+          <label class="block text-gray-700" for="cognoms">Cognoms</label>
           <input
             id="cognoms"
-            v-model="textarea"
+            v-model="cognoms"
             class="form-input mt-1 block w-full h-12 rounded px-4 border border-gray-300"
             type="text"
             required
@@ -65,12 +65,12 @@
         </div>
 
         <div class="mb-4">
-          <label class="block text-gray-700" for="password">Edat</label>
+          <label class="block text-gray-700" for="edat">Edat</label>
           <input
             id="edat"
-            v-model="textarea"
+            v-model="edat"
             class="form-input mt-1 block w-full h-12 rounded px-4 border border-gray-300"
-            type="text"
+            type="number"
             required
             placeholder="Edat"
           >
@@ -88,17 +88,14 @@
 </template>
 
 <script>
-
-import axios from 'axios' // Importa Axios para realizar solicituds
-
-// afegir aqui validacio de que password = passwordRepeat
+import axios from 'axios'
 
 export default {
-
   data () {
     return {
       email: '',
       password: '',
+      passwordRepeat: '',
       nom: '',
       cognoms: '',
       edat: ''
@@ -106,21 +103,27 @@ export default {
   },
   methods: {
     async submit () {
+      if (this.password !== this.passwordRepeat) {
+        alert('Les contrasenyes no coincideixen. Si us plau, intenta-ho de nou.')
+        return
+      }
+
       try {
-        const response = await axios.post('http://localhost:8000/api/jugador/jugador/', {
+        const baseURL = process.env.API_BASE_URL || 'http://localhost:3000'
+        const response = await axios.post(`${baseURL}/api/jugador/jugador/`, {
           email: this.email,
           contrasenya: this.password,
-          nom: this.name,
+          nom: this.nom,
           cognoms: this.cognoms,
-          edat: this.edad
+          edat: this.edat
         })
 
         if (response.status === 201) {
           alert('Jugador registrat amb èxit!')
+          document.getElementById('formulariregistre').reset()
         }
       } catch (error) {
-        console.error('Error per consola:', error.response?.data || error.message) // revisar error si ja existeix
-        alert(`Ha ocurrido un error al registrar el jugador: ${error.response?.data.error || error.message}`)
+        alert(`Error de registre: ${error.response?.data.error || error.message}`)
       }
     }
   }
