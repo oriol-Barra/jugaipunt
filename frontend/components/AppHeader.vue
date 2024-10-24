@@ -30,7 +30,10 @@
               Perfil
             </button>
           </nuxt-link>
-          <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700" @click="logout">
+          <button
+            class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700"
+            @click="logout"
+          >
             Logout
           </button>
         </template>
@@ -58,27 +61,34 @@ export default {
   name: 'AppHeader',
   data () {
     return {
-      isAuthenticated: false
+      isAuthenticated: false // Estat per verificar si l'usuari està autenticat
     }
   },
-  created () {
-    this.checkAuth()
+  mounted () {
+    this.checkAuthentication() // Comprova l'autenticació en muntar el component
   },
   methods: {
-    async checkAuth () {
-      try {
-        const baseURL = process.env.API_BASE_URL || 'http://localhost:3000'
-        const response = await axios.get(`${baseURL}/api/auth/check`)
-        this.isAuthenticated = response.data.isAuthenticated
-      } catch (error) {
-        console.error('Error checking authentication:', error)
-      }
+    checkAuthentication () {
+      // Comprovar si existeix el token a localStorage
+      const token = localStorage.getItem('authToken')
+      this.isAuthenticated = !!token // Assignar true o false segons existeixi el token
     },
     async logout () {
       try {
+        const token = localStorage.getItem('authToken') // Obtenir el token del localStorage
         const baseURL = process.env.API_BASE_URL || 'http://localhost:3000'
-        await axios.post(`${baseURL}/api/auth/logout`)
+
+        // Enviar el token en el cos de la sol·licitud
+        await axios.post(`${baseURL}/api/jugador/logout`, { token })
+
+        // Eliminar el token de localStorage
+        localStorage.removeItem('authToken')
+
+        // Actualitzar l'estat
         this.isAuthenticated = false
+
+        // Redirigir a la pàgina d'inici de sessió
+        this.$router.push('/login')
       } catch (error) {
         console.error('Error logging out:', error)
       }

@@ -88,14 +88,16 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios' // Importa Axios per a realizar sol·licituds
+
 
 export default {
   data () {
     return {
       email: '',
       password: '',
-      passwordRepeat: '',
+      passwordRepeat: '', // Añadir esta línea para almacenar la contraseña repetida
+
       nom: '',
       cognoms: '',
       edat: ''
@@ -103,16 +105,19 @@ export default {
   },
   methods: {
     async submit () {
+      // Validar que las contraseñas coinciden
       if (this.password !== this.passwordRepeat) {
         alert('Les contrasenyes no coincideixen. Si us plau, intenta-ho de nou.')
-        return
+        return // No enviar la solicitud si las contraseñas no coinciden
+
       }
 
       try {
         const baseURL = process.env.API_BASE_URL || 'http://localhost:3000'
         const response = await axios.post(`${baseURL}/api/jugador/jugador/`, {
           email: this.email,
-          contrasenya: this.password,
+          contrasenya: this.password, // Solo se envía la contraseña
+
           nom: this.nom,
           cognoms: this.cognoms,
           edat: this.edat

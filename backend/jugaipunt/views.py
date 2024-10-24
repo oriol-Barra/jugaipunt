@@ -1,47 +1,89 @@
 from django.shortcuts import render
-
-# Create your views here.
-
+from django.contrib.auth.hashers import make_password, check_password
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.crypto import get_random_string 
 import json
 from .models import Jugador
-from django.contrib.auth.hashers import check_password
 
+@csrf_exempt
 def crear_jugador(request):
     if request.method == 'POST':
-        # Aquí puedes procesar los datos del alumno enviados en el cuerpo de la solicitud
-        data = json.loads(request.body)
-        # Supongamos que tienes un modelo Alumne para guardar los datos en la base de datos
-        jugador = Jugador.objects.create(**data)
-        # return JsonResponse({'id': alumne.id}, status=201)
-        return JsonResponse({'message': 'jugador creat exitosament!'}, status=201)
+        try:
+            data = json.loads(request.body)
 
-    return JsonResponse({'error': 'Mètode no permès'}, status=405)
+            # Comprovar si el jugador ja existeix per email o nom
+            if Jugador.objects.filter(email=data.get('email')).exists():
+                return JsonResponse({'error': 'Ja existeix un jugador amb aquest correu electrònic.'}, status=400)
 
+            if Jugador.objects.filter(nom=data.get('nom')).exists():
+                return JsonResponse({'error': 'Ja existeix un jugador amb aquest nom.'}, status=400)
+
+            # Hashear la contrasenya abans de guardar
+            data['contrasenya'] = make_password(data.get('contrasenya'))
+
+            # Crear el jugador
+            jugador = Jugador.objects.create(**data)
+
+            return JsonResponse({'message': 'Jugador creat exitosament!'}, status=201)
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+        
+@csrf_exempt
 def login_view(request):
     if request.method == 'POST':
         try:
-            # processar el cos de la solicitud com a JSON
             data = json.loads(request.body)
-
-            # Obtenir nom y contrasenya del cos de la sol·licitud
-            nom = data.get('nom')
+            email = data.get('email')
             contrasenya = data.get('contrasenya')
 
-            # Buscar el jugador per el nom
             try:
-                jugador = Jugador.objects.get(nom=nom)
+                jugador = Jugador.objects.get(email=email)
             except Jugador.DoesNotExist:
                 return JsonResponse({'error': 'Jugador no trobat.'}, status=404)
 
-            # Verificar si la contrasenya es correcta
+            # Comprovar la contrasenya utilitzant check_password
             if check_password(contrasenya, jugador.contrasenya):
-                return JsonResponse({'message': f'Benvingut, {jugador.nom}!'}, status=200)
+                # Generar un token de sessió
+                session_token = get_random_string(length=32)
+                
+                # Guardar el token a la base de dades del jugador
+                jugador.session_token = session_token
+                jugador.save()
+
+                return JsonResponse({
+                    'message': f'Benvingut, {jugador.nom}!',
+                    'token': session_token  # Devuelve el token
+                }, status=200)
             else:
-                return JsonResponse({'error': 'Contrasenyaa incorrecta.'}, status=400)
+                return JsonResponse({'error': 'Contrasenya incorrecta.'}, status=400)
 
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Sol·licitud invàlida.'}, status=400)
 
-    return JsonResponse({'error': 'Mètode no permès.'}, status=405)
+    return JsonResponse({'error': 'Mètode no permès'}, status=405)
+
+@csrf_exempt
+def logout_view(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            token = data.get('token')
+
+            try:
+                # Buscar al jugador que tiene el token de sesión dado
+                jugador = Jugador.objects.get(session_token=token)
+            except Jugador.DoesNotExist:
+                return JsonResponse({'error': 'Token de sessió no vàlid.'}, status=404)
+
+            # Eliminar el token de sesión
+            jugador.session_token = None
+            jugador.save()
+
+            return JsonResponse({'message': 'Sessió tancada correctament.'}, status=200)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Sol·licitud invàlida.'}, status=400)
+
+    return JsonResponse({'error': 'Mètode no permès'}, status=405)

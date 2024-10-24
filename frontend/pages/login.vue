@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios' // Importa Axios per a realizar sol·licituds
 
 export default {
   data () {
@@ -65,20 +65,28 @@ export default {
   methods: {
     async submit () {
       try {
-        const baseURL = process.env.API_BASE_URL || 'http://localhost:3000'
-        await axios.post(`${baseURL}/api/auth/login`, {
+        const response = await axios.post('http://localhost:8000/api/jugador/login/', {
           email: this.email,
-          password: this.password
+          contrasenya: this.password
         })
+        if (response.status === 200) {
+          const token = response.data.token
+
+          // Guardar el token en LocalStorage
+          localStorage.setItem('authToken', token)
+          alert(`Benvingut/da: ${response.data.message}`)
+
+          // Netegem els camps del formulari
+          this.email = ''
+          this.password = ''
+
+          // Recarregar la pàgina
+          location.reload()
+        }
       } catch (error) {
-        console.error('Error logging in:', error)
+        const errorMessage = error.response?.data?.error || error.message
+        alert(`Hi ha hagut un error: ${errorMessage}`)
       }
-    },
-    loginWithGoogle () {
-      // Implement Google login
-    },
-    loginWithFacebook () {
-      // Implement Facebook login
     }
   }
 }
@@ -86,3 +94,4 @@ export default {
 
 <style scoped>
 </style>
+

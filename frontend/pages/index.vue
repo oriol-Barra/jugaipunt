@@ -7,7 +7,7 @@
       <p class="text-xl mb-8">
         El teu portal per organitzar i veure tornejos d'escacs
       </p>
-      <nuxt-link to="/register">
+      <nuxt-link to="register">
         <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
           Registra't Ara
         </button>
