@@ -55,6 +55,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'AppHeader',
   data () {
@@ -71,15 +73,25 @@ export default {
       const token = localStorage.getItem('authToken')
       this.isAuthenticated = !!token // Assignar true o false segons existeixi el token
     },
-    logout () {
-      // Eliminar el token de localStorage
-      localStorage.removeItem('authToken')
+    async logout () {
+      try {
+        const token = localStorage.getItem('authToken') // Obtenir el token del localStorage
+        const baseURL = process.env.API_BASE_URL || 'http://localhost:3000'
 
-      // Actualitzar l'estat per ocultar el botó de "Logout"
-      this.isAuthenticated = false
+        // Enviar el token en el cos de la sol·licitud
+        await axios.post(`${baseURL}/api/jugador/logout`, { token })
 
-      // Redirigir a la pàgina d'inici de sessió o a una altra pàgina
-      this.$router.push('/login')
+        // Eliminar el token de localStorage
+        localStorage.removeItem('authToken')
+
+        // Actualitzar l'estat
+        this.isAuthenticated = false
+
+        // Redirigir a la pàgina d'inici de sessió
+        this.$router.push('/login')
+      } catch (error) {
+        console.error('Error logging out:', error)
+      }
     }
   }
 }

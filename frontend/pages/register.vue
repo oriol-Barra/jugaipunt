@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex flex-col justify-center items-center bg-cover" style="background-image: url('./assets/background.jpg'); ">
+  <div class="min-h-screen flex flex-col justify-center items-center bg-cover">
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
       <h1 class="text-3xl font-bold mb-8 text-center">
         Alta de nou usuari
@@ -90,12 +90,14 @@
 <script>
 import axios from 'axios' // Importa Axios per a realizar sol·licituds
 
+
 export default {
   data () {
     return {
       email: '',
       password: '',
       passwordRepeat: '', // Añadir esta línea para almacenar la contraseña repetida
+
       nom: '',
       cognoms: '',
       edat: ''
@@ -107,12 +109,15 @@ export default {
       if (this.password !== this.passwordRepeat) {
         alert('Les contrasenyes no coincideixen. Si us plau, intenta-ho de nou.')
         return // No enviar la solicitud si las contraseñas no coinciden
+
       }
 
       try {
-        const response = await axios.post('http://localhost:8000/api/jugador/jugador/', {
+        const baseURL = process.env.API_BASE_URL || 'http://localhost:3000'
+        const response = await axios.post(`${baseURL}/api/jugador/jugador/`, {
           email: this.email,
           contrasenya: this.password, // Solo se envía la contraseña
+
           nom: this.nom,
           cognoms: this.cognoms,
           edat: this.edat

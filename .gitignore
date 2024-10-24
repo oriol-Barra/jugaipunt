@@ -1,8 +1,7 @@
 **/.nuxt
 **/.eslintcache
 **/node_modules
-pgdata/
-docker-compose.yml
-dockerfile
-frontend/dockerfile
-backend/src/settings.py
+
+**/.output
+**/dist
+**/.env
