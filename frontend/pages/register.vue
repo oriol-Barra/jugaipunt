@@ -76,6 +76,18 @@
           >
         </div>
 
+        <div class="mb-4">
+          <label class="block text-gray-700" for="num_federat">Número de federat</label>
+          <input
+            id="num_federat"
+            v-model="edat"
+            class="form-input mt-1 block w-full h-12 rounded px-4 border border-gray-300"
+            type="number"
+            required
+            placeholder="Número de federat"
+          >
+        </div>
+
         <button
           class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 w-full mb-4"
           type="submit"
@@ -100,7 +112,8 @@ export default {
 
       nom: '',
       cognoms: '',
-      edat: ''
+      edat: '',
+      num_federat: ''
     }
   },
   methods: {
@@ -120,7 +133,8 @@ export default {
 
           nom: this.nom,
           cognoms: this.cognoms,
-          edat: this.edat
+          edat: this.edat,
+          num_federat: this.num_federat
         })
 
         if (response.status === 201) {
