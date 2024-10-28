@@ -21,17 +21,17 @@ export default {
   name: 'HomePage',
   data () {
     return {
-      isAuthenticated: false
+      //isAuthenticated: false
     }
   },
   mounted () {
-    this.checkAuthentication()
+    //this.checkAuthentication()
   },
   methods: {
     checkAuthentication () {
       // Comprovar si existeix el token a localStorage
-      const token = localStorage.getItem('authToken')
-      this.isAuthenticated = !!token // Assignar true o false segons existeixi el token
+      //const token = localStorage.getItem('authToken')
+      //this.isAuthenticated = !!token // Assignar true o false segons existeixi el token
     }
   }
 }
