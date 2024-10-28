@@ -76,10 +76,10 @@ export default {
     async logout () {
       try {
         const token = localStorage.getItem('authToken') // Obtenir el token del localStorage
-        const baseURL = process.env.API_BASE_URL || 'http://localhost:3000'
+        const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
 
         // Enviar el token en el cos de la sol·licitud
-        await axios.post(`${baseURL}/api/jugador/logout`, { token })
+        await axios.post(`${baseURL}/api/jugador/logout/`, { token })
 
         // Eliminar el token de localStorage
         localStorage.removeItem('authToken')
