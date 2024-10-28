@@ -30,6 +30,29 @@
               Perfil
             </button>
           </nuxt-link>
+          <nuxt-link to="/estadistiques">
+            <button class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700">
+              Estadístiques
+            </button>
+          </nuxt-link>
+          <!--Button crear lliga-->
+          <nuxt-link to="/crearlliga" >
+            <button v-if="isAdmin" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700">
+              Crear lliga
+            </button>
+            <button v-if="!isAdmin" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700" disabled>
+              Crear lliga
+            </button>
+          </nuxt-link>
+          <!--Button resultat partides-->
+          <nuxt-link to="/resultatspartides">
+            <button v-if="isAdmin" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700">
+              Resultats partides
+            </button>
+            <button v-if="!isAdmin" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700" disabled>
+              Resultats partides
+            </button>
+          </nuxt-link>
           <button
             class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700"
             @click="logout"
@@ -61,17 +84,23 @@ export default {
   name: 'AppHeader',
   data () {
     return {
-      isAuthenticated: false // Estat per verificar si l'usuari està autenticat
+      isAuthenticated: false, // Estat per verificar si l'usuari està autenticat
+      isAdmin: true           // Estar per verificar si l'usuari és admin
     }
   },
   mounted () {
     this.checkAuthentication() // Comprova l'autenticació en muntar el component
+    //this.checkIsAdmin()
   },
   methods: {
     checkAuthentication () {
       // Comprovar si existeix el token a localStorage
       const token = localStorage.getItem('authToken')
       this.isAuthenticated = !!token // Assignar true o false segons existeixi el token
+    },
+    checkIsAdmin () {
+      // Comprovar si l'usari és admin
+      //this.isAdmin = false // TO DO -- obtenir dades de l'endpoint
     },
     async logout () {
       try {
