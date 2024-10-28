@@ -109,7 +109,6 @@ export default {
       email: '',
       password: '',
       passwordRepeat: '', // Añadir esta línea para almacenar la contraseña repetida
-
       nom: '',
       cognoms: '',
       edat: '',
@@ -130,7 +129,6 @@ export default {
         const response = await axios.post(`${baseURL}/api/jugador/jugador/`, {
           email: this.email,
           contrasenya: this.password, // Solo se envía la contraseña
-
           nom: this.nom,
           cognoms: this.cognoms,
           edat: this.edat,
