@@ -80,8 +80,6 @@ export default {
           this.email = ''
           this.password = ''
 
-          // Recarregar la pàgina
-          // location.reload()
           // Redirigim a la part restringida de la web
           window.location = '/DashboardPage'
         }

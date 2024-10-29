@@ -7,7 +7,7 @@ export default defineNuxtConfig({
   // Global page headers: https://go.nuxtjs.dev/config-head
   app: {
     head: {
-      title: 'frontend',
+      title: 'Jugar i Punt',
       htmlAttrs: {
         lang: 'ca'
       },
@@ -18,7 +18,7 @@ export default defineNuxtConfig({
         { name: 'format-detection', content: 'telephone=no' }
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+        { rel: 'icon', type: 'image/x-icon', href: '/chess.ico' }
       ]
     }
   },
