@@ -37,12 +37,10 @@ export default defineNuxtConfig({
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  modules: [
-    // https://go.nuxtjs.dev/eslint
-    '@nuxtjs/eslint-module',
-    // https://go.nuxtjs.dev/tailwindcss
-    '@nuxtjs/tailwindcss'
-  ],
+  modules: [// https://go.nuxtjs.dev/eslint
+  '@nuxtjs/eslint-module', // https://go.nuxtjs.dev/tailwindcss
+  //'@nuxtjs/tailwindcss',
+  '@nuxt/ui'],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
