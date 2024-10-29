@@ -42,6 +42,11 @@
               <Placeholder class="h-full" />
 
               <div class="flex flex-col gap-2">
+                <nuxt-link to='/dashboardPage'>
+                  <button class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700">
+                    Dashboard
+                  </button>
+                </nuxt-link>
                 <nuxt-link to="/profile">
                   <button class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700">
                     Perfil
@@ -124,6 +129,13 @@ export default {
     checkIsAdmin () {
       // Comprovar si l'usari és admin
       //this.isAdmin = false // TO DO -- obtenir dades de l'endpoint
+      const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
+      try {
+        const response = axios.get(`${baseURL}/api/jugador/dades/`) // TO-DO. Acabar de concretar quin és l'endpoint
+
+      } catch (error) {
+        console.log(error)
+      }
     },
     async logout () {
       try {

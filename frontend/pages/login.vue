@@ -81,7 +81,9 @@ export default {
           this.password = ''
 
           // Recarregar la pàgina
-          location.reload()
+          // location.reload()
+          // Redirigim a la part restringida de la web
+          window.location = '/DashboardPage'
         }
       } catch (error) {
         const errorMessage = error.response?.data?.error || error.message
