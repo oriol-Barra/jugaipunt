@@ -28,7 +28,7 @@
           <!--Botó Menú-->
           <UButton v-if="isAdmin" label="Menú" @click="menuIsOpen = true" />
           <!--Contingut del panell-->
-          <USlideover v-model="menuIsOpen" prevent-close>
+          <USlideover v-model="menuIsOpen" :overlay="false">
             <UCard class="flex flex-col flex-1" :ui="{ body: { base: 'flex-1' }, ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
               <template #header>
                 <div class="flex items-center justify-between">
@@ -62,7 +62,7 @@
                   </button>
                 </nuxt-link>
                 <!--Button resultat partides-->
-                <nuxt-link to="/resultatspartides">
+                <nuxt-link to="/ResultatsPartides">
                   <button v-if="isAdmin" class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700">
                     Resultats partides
                   </button>
@@ -79,8 +79,8 @@
               </div>
             </UCard>
           </USlideover>
-
         </template>
+
         <template v-else>
           <nuxt-link to="/register">
             <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
@@ -92,8 +92,8 @@
               Iniciar Sessió
             </button>
           </nuxt-link>
-
         </template>
+
       </div>
     </div>
   </header>
