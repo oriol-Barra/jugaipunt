@@ -42,7 +42,7 @@
               <Placeholder class="h-full" />
 
               <div class="flex flex-col gap-2">
-                <nuxt-link to='/dashboardPage'>
+                <nuxt-link to="/dashboardPage">
                   <button class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700">
                     Dashboard
                   </button>
@@ -58,7 +58,7 @@
                   </button>
                 </nuxt-link>
                 <!--Button crear lliga-->
-                <nuxt-link to="/crearlliga" >
+                <nuxt-link to="/crearlliga">
                   <button v-if="isAdmin" class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700">
                     Crear lliga
                   </button>
@@ -98,7 +98,6 @@
             </button>
           </nuxt-link>
         </template>
-
       </div>
     </div>
   </header>
@@ -112,13 +111,13 @@ export default {
   data () {
     return {
       isAuthenticated: false, // Estat per verificar si l'usuari està autenticat
-      isAdmin: true,           // Estar per verificar si l'usuari és admin
-      menuIsOpen: false,
+      isAdmin: true, // Estar per verificar si l'usuari és admin
+      menuIsOpen: false
     }
   },
   mounted () {
     this.checkAuthentication() // Comprova l'autenticació en muntar el component
-    //this.checkIsAdmin()
+    // this.checkIsAdmin()
   },
   methods: {
     checkAuthentication () {
@@ -128,11 +127,10 @@ export default {
     },
     checkIsAdmin () {
       // Comprovar si l'usari és admin
-      //this.isAdmin = false // TO DO -- obtenir dades de l'endpoint
-      const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
+      // this.isAdmin = false // TO DO -- obtenir dades de l'endpoint
+      // const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
       try {
-        const response = axios.get(`${baseURL}/api/jugador/dades/`) // TO-DO. Acabar de concretar quin és l'endpoint
-
+        // const response = axios.get(`${baseURL}/api/jugador/dades/`) // TO-DO. Acabar de concretar quin és l'endpoint
       } catch (error) {
         console.log(error)
       }

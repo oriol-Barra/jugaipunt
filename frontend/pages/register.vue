@@ -102,7 +102,6 @@
 <script>
 import axios from 'axios' // Importa Axios per a realizar sol·licituds
 
-
 export default {
   data () {
     return {
@@ -121,11 +120,10 @@ export default {
       if (this.password !== this.passwordRepeat) {
         alert('Les contrasenyes no coincideixen. Si us plau, intenta-ho de nou.')
         return // No enviar la solicitud si las contraseñas no coinciden
-
       }
 
       try {
-        const baseURL = process.env.API_BASE_URL || 'http://localhost:3000'
+        const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
         const response = await axios.post(`${baseURL}/api/jugador/jugador/`, {
           email: this.email,
           contrasenya: this.password, // Solo se envía la contraseña
