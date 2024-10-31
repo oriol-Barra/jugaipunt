@@ -32,6 +32,7 @@ def crear_jugador(request):
         
 @csrf_exempt
 def login_view(request):
+    
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
@@ -96,6 +97,10 @@ def logout_view(request):
 #@csrf_exempt
 #def afegirJugadors_view(request):
 #funció per afegir els jugadors al torneig (des del frontend s'envien en una list, no jugador per jugador)
+
+#@csrf_exempt
+#def getUser_view(request):
+#funció per a retornar les dades de l'usuari, totes, si és admin, nom, cognom, partides en les que està
 
 
 
