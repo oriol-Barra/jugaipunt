@@ -100,7 +100,7 @@ export default {
     async submit () {
       try {
         const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
-        const response = await axios.post(`${baseURL}/api/torneig/`, {
+        const response = await axios.post(`${baseURL}/api/noutorneig`, {
           nomLliga: this.nomLliga,
           dataInici: this.dataInici,
           dataFi: this.dataFi,

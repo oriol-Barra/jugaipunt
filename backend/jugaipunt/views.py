@@ -87,3 +87,17 @@ def logout_view(request):
             return JsonResponse({'error': 'Sol·licitud invàlida.'}, status=400)
 
     return JsonResponse({'error': 'Mètode no permès'}, status=405)
+
+
+#@csrf_exempt
+#def creatorneig_view(request):
+#funció per a crear tornejos, descomentem i creem les lògiques
+
+#@csrf_exempt
+#def afegirJugadors_view(request):
+#funció per afegir els jugadors al torneig (des del frontend s'envien en una list, no jugador per jugador)
+
+
+
+
+

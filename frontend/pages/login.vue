@@ -65,7 +65,7 @@ export default {
   methods: {
     async submit () {
       try {
-        const response = await axios.post('http://localhost:8000/api/jugador/login/', {
+        const response = await axios.post('http://localhost:8000/api/login', {
           email: this.email,
           contrasenya: this.password
         })
@@ -94,4 +94,3 @@ export default {
 
 <style scoped>
 </style>
-

@@ -124,7 +124,7 @@ export default {
 
       try {
         const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
-        const response = await axios.post(`${baseURL}/api/jugador/jugador/`, {
+        const response = await axios.post(`${baseURL}/api/jugador`, {
           email: this.email,
           contrasenya: this.password, // Solo se envía la contraseña
           nom: this.nom,

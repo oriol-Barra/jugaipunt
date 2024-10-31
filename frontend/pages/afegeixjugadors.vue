@@ -116,7 +116,7 @@ export default {
 
         // envia la llista de jugadors al backend, si aquesta ja es igual al numero de jugadors de la lliga
         if (this.jugadorsAfegits.length === parseInt(this.numJugadors)) {
-          await axios.post(`${baseURL}/api/lliga/afegir_jugador`, this.jugadorsAfegits)
+          await axios.post(`${baseURL}/api/torneig/afegir_jugadors`, this.jugadorsAfegits)
           console.log('Jugadors afegits:', this.jugadorsAfegits)
         }
         // neteja la selecció i el camp de búsqueda
