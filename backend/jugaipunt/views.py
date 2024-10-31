@@ -102,6 +102,9 @@ def logout_view(request):
 #def getUser_view(request):
 #funció per a retornar les dades de l'usuari, totes, si és admin, nom, cognom, partides en les que està
 
+#@csrf_exempt
+#def afegir_resultats(request):
+#funció per a afegir els resultats de les partides. Data, usuari guanyador i perdedor. 
 
 
 
