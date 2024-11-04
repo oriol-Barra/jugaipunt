@@ -18,7 +18,7 @@
         </div>
       </form>
 
-      <!-- Resultados de búsqueda -->
+      <!-- Resultats de búsqueda -->
       <div v-if="resultats.length" class="mt-4">
         <h2 class="text-lg font-semibold">
           Resultats de la cerca:
@@ -39,9 +39,9 @@
       <button
         class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 w-full mb-4 mt-4"
         :disabled="!jugadorSeleccionat"
-        @click="afegirJugador"
+        @click="afegirLliga"
       >
-        Afegir Jugador
+        Crea la lliga
       </button>
 
       <!-- Llista de jugadors afegits -->
@@ -107,30 +107,36 @@ export default {
       }
     },
     seleccionarJugador (jugador) {
+      // selecciona el jugador fent click damunt
       this.jugadorSeleccionat = jugador
+      // Afegir el jugador seleccionat a la llista local de jugadors afegits
+      this.jugadorsAfegits.push(this.jugadorSeleccionat)
+      // si la llista de jugadors és igual al número de jugaodrs que ha de tenir la lliga enviem alert indicant que tot està correcte.
+      if (this.jugadorsAfegits.length === parseInt(this.numJugadors)) {
+        alert("tots els jugadors ja han sigut registrats, si desitjes donar d'alta la lliga prem el botó")
+      // Si encara falten jugadors avisem
+      } else {
+        alert('encara no has afegit a tots els jugadors')
+      }
     },
-    async afegirJugador () {
+    async afegirLliga () {
       if (!this.jugadorSeleccionat) { return }
 
       try {
         const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
 
-        // Afegir el jugador seleccionat a la llista local de jugadors afegits
-        this.jugadorsAfegits.push(this.jugadorSeleccionat)
-
         // envia totes les dades per a crear la lliga al backend
-        if (this.jugadorsAfegits.length === parseInt(this.numJugadors)) {
-          const response = await axios.post(`${baseURL}/api/crealliga`, {
-            llistaJugadors: this.jugadorsAfegits,
-            nomLliga: this.nomLliga,
-            dataInici: this.dataInici,
-            dataFi: this.dataFi,
-            tipusTorneig: this.tipusTorneig
-          })
-          if (response.status === 201) {
-            alert('Lliga o Torneig registrat amb èxit!')
-          }
+        const response = await axios.post(`${baseURL}/api/crealliga`, {
+          llistaJugadors: this.jugadorsAfegits,
+          nomLliga: this.nomLliga,
+          dataInici: this.dataInici,
+          dataFi: this.dataFi,
+          tipusTorneig: this.tipusTorneig
+        })
+        if (response.status === 201) {
+          alert('Lliga o Torneig registrat amb èxit!')
         }
+
         // neteja la selecció i el camp de búsqueda
         this.jugadorSeleccionat = null
         this.nomJugador = ''
