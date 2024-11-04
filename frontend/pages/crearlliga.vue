@@ -84,8 +84,6 @@
 
 <script>
 
-import axios from 'axios'
-
 export default {
   data () {
     return {
@@ -93,33 +91,33 @@ export default {
       dataInici: '',
       dataFi: '',
       tipusTorneig: '',
-      numJugadors: ''
+      numJugadors: 0
     }
   },
   methods: {
-    async submit () {
+    enviarDades () {
       try {
-        const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
-        const response = await axios.post(`${baseURL}/api/noutorneig`, {
-          nomLliga: this.nomLliga,
-          dataInici: this.dataInici,
-          dataFi: this.dataFi,
-          tipusTorneig: this.tipusTorneig,
-          numJugadors: this.numJugadors
-        })
+        // Reinicialitzar el formulari
+        document.getElementById('formulariTorneig').reset()
 
-        if (response.status === 201) {
-          alert('Lliga o Torneig registrat amb èxit!')
-          document.getElementById('formulariTorneig').reset()
-          // Navegar a la pàgina Afegeix Jugador amb el número de jugadors
-          this.$router.push(`/afegeixjugadors?numJugadors=${this.numJugadors}`)
-        }
+        // Navegar a la pàgina Afegeix Jugador amb els paràmetres a la URL
+        this.$router.push({
+          path: '/afegeixjugadors',
+          query: {
+            numJugadors: this.numJugadors,
+            nomLliga: this.nomLliga,
+            dataInici: this.dataInici,
+            dataFi: this.dataFi,
+            tipusTorneig: this.tipusTorneig
+          }
+        })
       } catch (error) {
         alert(`Error de registre: ${error.response?.data.error || error.message}`)
       }
     }
   }
 }
+
 </script>
 
 <style scoped>

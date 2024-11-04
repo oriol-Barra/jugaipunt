@@ -77,8 +77,13 @@ export default {
     }
   },
   mounted () {
-    // Mostrar el número de jugadores recibido desde CrearLliga
+    // Rebem les dades desde crealliga.vue
     this.numJugadors = this.$route.query.numJugadors
+    this.nomLliga = this.$route.query.nomLliga
+    this.dataInici = this.$route.query.dataInici
+    this.dataFi = this.$route.query.dataFi
+    this.tipusTorneig = this.$route.query.tipusTorneig
+
     console.log('Número de Jugadores recibido:', this.numJugadors)
   },
 
@@ -109,15 +114,22 @@ export default {
 
       try {
         const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
-        await axios.post(`${baseURL}/api/lliga/afegir_jugador`, this.jugadorSeleccionat)
 
         // Afegir el jugador seleccionat a la llista local de jugadors afegits
         this.jugadorsAfegits.push(this.jugadorSeleccionat)
 
-        // envia la llista de jugadors al backend, si aquesta ja es igual al numero de jugadors de la lliga
+        // envia totes les dades per a crear la lliga al backend
         if (this.jugadorsAfegits.length === parseInt(this.numJugadors)) {
-          await axios.post(`${baseURL}/api/torneig/afegir_jugadors`, this.jugadorsAfegits)
-          console.log('Jugadors afegits:', this.jugadorsAfegits)
+          const response = await axios.post(`${baseURL}/api/crealliga`, {
+            llistaJugadors: this.jugadorsAfegits,
+            nomLliga: this.nomLliga,
+            dataInici: this.dataInici,
+            dataFi: this.dataFi,
+            tipusTorneig: this.tipusTorneig
+          })
+          if (response.status === 201) {
+            alert('Lliga o Torneig registrat amb èxit!')
+          }
         }
         // neteja la selecció i el camp de búsqueda
         this.jugadorSeleccionat = null
