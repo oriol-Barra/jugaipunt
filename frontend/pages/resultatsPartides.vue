@@ -27,13 +27,14 @@
               type="text"
               required
               placeholder="Jugador 1"
+              @input="buscarJugador1"
             >
           </div>
           <div class="mb-4">
-            <label class="block text-gray-700" for="jugador1">Nom jugador 2</label>
+            <label class="block text-gray-700" for="jugador2">Nom jugador 2</label>
             <input
               id="jugador2"
-              v-model="jugador1"
+              v-model="jugador2"
               class="form-input mt-1 block w-full h-12 rounded px-4 border border-gray-300"
               type="text"
               required
@@ -64,8 +65,45 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-  name: 'ResultatsPartides'
+  name: 'ResultatsPartides',
+  data () {
+    return {
+      jugador1: '',
+      jugador2: ''
+    }
+  },
+  methods: {
+    async buscarJugador1 () {
+
+      try {
+        console.log('busca jugador')
+        const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
+        const response = await axios.get(`${baseURL}/api/jugador/buscar`, {
+          params: { nom: this.jugador1 } // envia el nom com a paràmetre
+        })
+
+        this.jugador1 = response.data[0] // Actualitza els resultats amb les dades de la resposta
+      } catch (error) {
+        console.error('Error en la cerca:', error)
+      }
+    },
+
+    async buscarJugador2 () {
+        try {
+          const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
+          const response = await axios.get(`${baseURL}/api/jugador/buscar`, {
+            params: { nom: this.jugador2 } // envia el nom com a paràmetre
+          })
+
+          this.jugador2 = response.data[0] // Actualitza els resultats amb les dades de la resposta
+        } catch (error) {
+          console.error('Error en la cerca:', error)
+        }
+        },
+      }
 }
 </script>
 
