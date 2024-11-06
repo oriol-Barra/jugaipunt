@@ -57,6 +57,8 @@ def login_view(request):
 
                 return JsonResponse({
                     'message': f'Benvingut, {jugador.nom}!',
+                    'nom_usuari': jugador.nom, 
+                    'id_usuari': jugador.pk, # retorna id usuari
                     'token': session_token  # Devuelve el token
                 }, status=200)
             else:
