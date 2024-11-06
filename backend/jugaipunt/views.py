@@ -198,6 +198,21 @@ def getUser_view(request, jugador_id):
     # Retornamos todos los datos del jugador, incluyendo las ligas (solo nombre) y partidas
     return JsonResponse(jugador_data)
 
+def getPartides(request):
+    """Funció per a retornar totes les partides"""
+
+    partides = Partida.objects.all()
+
+    llista_partides = []
+
+    for partida in partides:
+        llista_partides.append({
+            'partida_pk': partida.pk,
+            'jugador1': partida.jugador1.nom,
+            'jugador2': partida.jugador2.nom
+        })
+       
+    return JsonResponse(llista_partides, safe=False)
     
 #@csrf_exempt
 #def getUser_view(request):
