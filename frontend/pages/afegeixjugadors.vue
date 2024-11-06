@@ -132,7 +132,7 @@ export default {
         const llistaJugadorsIDs = this.jugadorsAfegits.map(jugador => ({ id: jugador.id }))
 
         // Enviar todas las informaciones necesarias al backend
-        const response = await axios.post(`${baseURL}/api/crealliga`, {
+        const response = await axios.post(`${baseURL}/api/noutorneig`, {
           llistaJugadors: llistaJugadorsIDs,
           nomLliga: this.nomLliga,
           dataInici: this.dataInici,
