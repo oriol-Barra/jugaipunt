@@ -2,7 +2,7 @@
   <div class="flex flex-col">
     <section class="bg-gray-100 p-8 shadow-lg min-h-screen w-full max-w-7xl pl-4">
       <h1 class="text-4xl mt-4 mb-8">
-        Benvingut <b>{{ nomUsuari }}</b>
+        Benvingut <b>{{ nomUsuari }} </b>
       </h1>
       <p class="text-xl mb-8">
         Aquest és el dashboard de la zona privada de Juga i Punt. Proximament accedeix aqui als tornejos.
@@ -22,7 +22,8 @@ export default {
     }
   },
   mounted () {
-    this.getUserName()
+    this.getUserName(),
+    this.nomUsuari = localStorage.getItem('nom_usuari')
   },
   methods: {
     getUserName () {
