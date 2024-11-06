@@ -84,7 +84,7 @@ export default {
     this.dataFi = this.$route.query.dataFi
     this.tipusTorneig = this.$route.query.tipusTorneig
 
-    console.log('Número de Jugadores recibido:', this.numJugadors)
+    console.log('Número de Jugadors rebut:', this.numJugadors)
   },
 
   methods: {

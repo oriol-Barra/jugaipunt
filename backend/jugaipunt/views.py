@@ -127,6 +127,35 @@ def crear_lliga(request):
         return JsonResponse({"message": "Lliga creada amb èxit!"}, status=201)
     else:
         return JsonResponse({"error": "Método no permitido"}, status=405)
+    
+@csrf_exempt   
+def generar_emparejaments(request, lliga_id):
+    lliga = get_object_or_404(Lliga, id=lliga_id)
+
+    if lliga.tipusTorneig == "liga":
+        jugadors = list(lliga.llistaJugadors.all())
+        partides = []
+
+        for i in range(len(jugadors)):
+            for j in range(i + 1, len(jugadors)):
+                jugador1 = jugadors[i]
+                jugador2 = jugadors[j]
+
+                partida = Partida.objects.create(
+                    lliga=lliga,
+                    jugador1=jugador1,
+                    jugador2=jugador2
+                )
+                partides.append({
+                    "id": partida.id,
+                    "jugador1": jugador1.nom,
+                    "jugador2": jugador2.nom,
+                    "resultat": partida.resultat  # Estado inicial vacío
+                })
+
+        return JsonResponse({"partides": partides}, status=201)
+    else:
+        return JsonResponse({"error": "El tipo de torneo no es 'liga'."}, status=400)
 
 #@csrf_exempt
 #def getUser_view(request):

@@ -30,10 +30,17 @@ class Lliga(models.Model):
         return f"{self.nomLliga} - {self.dataInici} a {self.dataFi}"
     
 class Partida(models.Model):
-    lliga = models.ForeignKey(Lliga, on_delete=models.CASCADE, related_name="partides")
-    jugador1 = models.ForeignKey(Jugador, on_delete=models.CASCADE, related_name="partides_jugador1")
-    jugador2 = models.ForeignKey(Jugador, on_delete=models.CASCADE, related_name="partides_jugador2")
+     RESULTATS = [
+        ('VJ1', 'Victòria Jugador 1'),
+        ('VJ2', 'Victòria Jugador 2'),
+        ('EMP', 'Empat')
+    ]
+     
+     lliga = models.ForeignKey(Lliga, on_delete=models.CASCADE, related_name="partides")
+     jugador1 = models.ForeignKey(Jugador, on_delete=models.CASCADE, related_name="partides_jugador1")
+     jugador2 = models.ForeignKey(Jugador, on_delete=models.CASCADE, related_name="partides_jugador2")
+     resultat = models.CharField(max_length=3, choices=RESULTATS, blank=True, null=True)  # Inicialmente sin resultado
 
-    def __str__(self):
-        return f"{self.jugador1.nom} vs {self.jugador2.nom} - Lliga: {self.lliga.nomLliga}"
+     def __str__(self):
+        return f"{self.jugador1.nom} vs {self.jugador2.nom} - Lliga: {self.lliga.nomLliga} - Resultat: {self.get_resultat_display() if self.resultat else 'Pendent'}"
 
