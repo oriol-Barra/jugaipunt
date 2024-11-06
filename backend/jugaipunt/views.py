@@ -4,7 +4,9 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.crypto import get_random_string 
 import json
-from .models import Jugador
+from .models import Jugador , Lliga , Partida
+from django.shortcuts import get_object_or_404
+
 
 @csrf_exempt
 def crear_jugador(request):
@@ -90,13 +92,41 @@ def logout_view(request):
     return JsonResponse({'error': 'Mètode no permès'}, status=405)
 
 
-#@csrf_exempt
-#def creatorneig_view(request):
-#funció per a crear tornejos, descomentem i creem les lògiques
+@csrf_exempt
+def crear_lliga(request):
+    if request.method == "POST":
+        # Cargar los datos JSON del cuerpo de la solicitud
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON data"}, status=400)
 
-#@csrf_exempt
-#def afegirJugadors_view(request):
-#funció per afegir els jugadors al torneig (des del frontend s'envien en una list, no jugador per jugador)
+        # Extraer datos de la liga y la lista de jugadores
+        nomLliga = data.get("nomLliga")
+        dataInici = data.get("dataInici")
+        dataFi = data.get("dataFi")
+        tipusTorneig = data.get("tipusTorneig")
+        llistaJugadors = data.get("llistaJugadors", [])
+
+        # Crear la liga
+        lliga = Lliga.objects.create(
+            nomLliga=nomLliga,
+            dataInici=dataInici,
+            dataFi=dataFi,
+            tipusTorneig=tipusTorneig,
+            usuariAdmin=request.user  # Asume que el usuario está autenticado
+        )
+
+        # Agregar los jugadores seleccionados a la liga
+        for jugador_data in llistaJugadors:
+            jugador_id = jugador_data.get("id")
+            if jugador_id:
+                jugador = get_object_or_404(Jugador, id=jugador_id)
+                lliga.llistaJugadors.add(jugador)
+
+        return JsonResponse({"message": "Lliga creada amb èxit!"}, status=201)
+    else:
+        return JsonResponse({"error": "Método no permitido"}, status=405)
 
 #@csrf_exempt
 #def getUser_view(request):

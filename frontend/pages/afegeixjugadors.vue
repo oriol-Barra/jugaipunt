@@ -120,31 +120,40 @@ export default {
       }
     },
     async afegirLliga () {
-      if (!this.jugadorSeleccionat) { return }
+      if (!this.jugadorSeleccionat || this.jugadorsAfegits.length < parseInt(this.numJugadors)) {
+        alert('Selecciona tots els jugadors requerits abans de crear la lliga.')
+        return
+      }
 
       try {
         const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
 
-        // envia totes les dades per a crear la lliga al backend
+        // Extrae solo los IDs de los jugadores para enviar al backend
+        const llistaJugadorsIDs = this.jugadorsAfegits.map(jugador => ({ id: jugador.id }))
+
+        // Enviar todas las informaciones necesarias al backend
         const response = await axios.post(`${baseURL}/api/crealliga`, {
-          llistaJugadors: this.jugadorsAfegits,
+          llistaJugadors: llistaJugadorsIDs,
           nomLliga: this.nomLliga,
           dataInici: this.dataInici,
           dataFi: this.dataFi,
           tipusTorneig: this.tipusTorneig
         })
+
         if (response.status === 201) {
           alert('Lliga o Torneig registrat amb èxit!')
+          this.jugadorsAfegits = [] // Limpiar la lista de jugadores añadidos
         }
 
-        // neteja la selecció i el camp de búsqueda
+        // Neteja els camps de selecció i cerca
         this.jugadorSeleccionat = null
         this.nomJugador = ''
         this.resultats = []
       } catch (error) {
-        console.error('Error al afegir el jugador:', error)
+        console.error('Error al crear la lliga:', error)
       }
     }
+
   }
 }
 </script>

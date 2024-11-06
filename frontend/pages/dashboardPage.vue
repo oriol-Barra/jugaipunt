@@ -5,7 +5,7 @@
         Benvingut <b>{{ nomUsuari }}</b>
       </h1>
       <p class="text-xl mb-8">
-         Aquest és el dashboard de la zona privada de Juga i Punt. Proximament accedeix aqui als tornejos.
+        Aquest és el dashboard de la zona privada de Juga i Punt. Proximament accedeix aqui als tornejos.
 
         a la part superior veureu el menú amb totes les opcions i ja no s'ha de mostrar ni login ni registre perque ja estás conectat.
       </p>
@@ -18,7 +18,7 @@ export default {
   name: 'DashboardPage',
   data () {
     return {
-      nomUsuari: null,
+      nomUsuari: null
     }
   },
   mounted () {
