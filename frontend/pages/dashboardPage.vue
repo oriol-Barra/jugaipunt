@@ -1,12 +1,11 @@
 <template>
-  <div class="flex flex-col">
-    <section class="bg-gray-100 p-8 shadow-lg min-h-screen w-full max-w-7xl pl-4">
-      <h1 class="text-4xl mt-4 mb-8">
+  <div class="bg-cover bg-center min-h-screen flex items-center justify-center">
+    <section class="bg-gray-100 p-8 shadow-lg max-w-3xl w-full rounded-lg text-left">
+      <h1 class="text-4xl mt-4 mb-8 text-center">
         Benvingut <b>{{ userData.nom }}</b>
       </h1>
-      <p class="text-xl mb-8">
-        Aquest és el dashboard de la zona privada de Juga i Punt. Proximament accedeix aquí als tornejos.
-        A la part superior veureu el menú amb totes les opcions i ja no s'ha de mostrar ni login ni registre perquè ja estàs connectat.
+      <p class="text-xl mb-8 text-center">
+        Des d'aquí podràs consultar les teves dades d'usuari i les lligues on estas inscrit
       </p>
 
       <!-- Mostramos los detalles del jugador -->
@@ -60,23 +59,14 @@ export default {
   methods: {
     async getUserData () {
       try {
-        // Obtener el ID del jugador desde localStorage
         // eslint-disable-next-line camelcase
         const jugador_id = localStorage.getItem('user_id')
-        console.log('Jugador ID desde localStorage:', jugador_id)
-
         // eslint-disable-next-line camelcase
         if (!jugador_id) {
           throw new Error('Jugador ID no encontrado en localStorage')
         }
-
-        // Hacer una llamada al backend para obtener toda la información del jugador
-        // eslint-disable-next-line camelcase
         const response = await axios.get(`http://localhost:8000/api/dashboard/${jugador_id}`)
-
-        // Asignar toda la información del jugador al estado
         this.userData = response.data
-        console.log(this.userData)
       } catch (error) {
         this.error = 'No s\'han pogut carregar les dades de l\'usuari'
         console.error(error)
@@ -89,4 +79,15 @@ export default {
 </script>
 
 <style scoped>
+.bg-cover {
+  background-image: url('/path/to/your/background-image.jpg'); /* Ruta de la imagen de fondo */
+  background-size: cover;
+  background-position: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
 </style>
