@@ -12,7 +12,7 @@
             <label class="block text-gray-700" for="partides">Buscar Partida</label>
 
             <UFormGroup name="select_partides" label="Partides">
-              <USelect v-model="partida_escollida" placeholder="Select..." :options="partides" />
+              <USelect v-model="partida_escollida" placeholder="Select..." :options="partides" @change="onSelectPartida"/>
             </UFormGroup>
 
           </div>
@@ -63,6 +63,7 @@ export default {
 
   },
   methods: {
+    /** Busquem les partides disponibles i les afegim al llistat */
     async buscarPartides () {
 
       try {
@@ -76,18 +77,35 @@ export default {
           this.partides = [
             {label: nomPartida, value: response.data[i].partida_pk}
           ]
-
-          this.jugadors = [
-            {label: response.data[i].jugador1, value: 'jugador1'},
-            {label: response.data[i].jugador2, value: 'jugador2'},
-          ]
         }
 
       } catch (error) {
         console.error('Error en la cerca:', error)
       }
     },
+    /** En funció de la partida escollida, mostrem les opcions de resultats */
+    async onSelectPartida () {
+      try {
+        const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
+        const response = await axios.get(`${baseURL}/api/partides`, {
+        })
 
+        for (var i=0; i<response.data.length; i++) {
+          console.log(response.data)
+          if(response.data[i].partida_pk == this.partida_escollida){
+            this.jugadors = [
+              {label: response.data[i].jugador1, value: 'jugador1'},
+              {label: response.data[i].jugador2, value: 'jugador2'},
+              {label: 'Empat', value: 'EMP'},
+            ]
+          }
+        }
+
+      } catch (error) {
+        console.error('Error en la cerca:', error)
+      }
+
+    },
     async enviarResultats () {
       try {
         const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
