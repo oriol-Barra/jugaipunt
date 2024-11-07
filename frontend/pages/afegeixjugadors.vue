@@ -73,7 +73,8 @@ export default {
       resultats: [],
       jugadorSeleccionat: null,
       jugadorsAfegits: [],
-      numJugadors: 0 // Inicializa numJugadors
+      numJugadors: 0, // Inicializa numJugadors
+      usuari: ''
     }
   },
   mounted () {
@@ -137,7 +138,8 @@ export default {
           nomLliga: this.nomLliga,
           dataInici: this.dataInici,
           dataFi: this.dataFi,
-          tipusTorneig: this.tipusTorneig
+          tipusTorneig: this.tipusTorneig,
+          usuari: localStorage.getItem('user_id')
         })
 
         if (response.status === 201) {
@@ -150,7 +152,7 @@ export default {
         this.nomJugador = ''
         this.resultats = []
       } catch (error) {
-        console.error('Error al crear la lliga:', error)
+        console.error('Error al crear la lliga:', error.response.data)
       }
     }
 

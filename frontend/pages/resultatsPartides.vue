@@ -7,14 +7,12 @@
       <div class="space-y-8">
         <!-- Seccio d'introduccio -->
         <form @submit.prevent="submit">
-
           <div class="mb-4">
             <label class="block text-gray-700" for="partides">Buscar Partida</label>
 
             <UFormGroup name="select_partides" label="Partides">
-              <USelect v-model="partida_escollida" placeholder="Select..." :options="partides" @change="onSelectPartida"/>
+              <USelect v-model="partida_escollida" placeholder="Select..." :options="partides" @change="onSelectPartida" />
             </UFormGroup>
-
           </div>
           <div class="mb-4">
             <label class="block text-gray-700" for="guanyador">Selecciona el Guanyador</label>
@@ -22,7 +20,6 @@
             <UFormGroup name="escull_jugador" label="Guanyador">
               <USelect v-model="jugador_guanyador" placeholder="Select..." :options="jugadors" />
             </UFormGroup>
-
           </div>
 
           <button
@@ -45,8 +42,7 @@ export default {
   name: 'ResultatsPartides',
 
   data () {
-
-    //var partides = []
+    // var partides = []
     //
     return {
       partida_escollida: undefined,
@@ -59,26 +55,22 @@ export default {
     // busquem partides
     this.buscarPartides()
     // busquem jugadors partida
-
-
   },
   methods: {
     /** Busquem les partides disponibles i les afegim al llistat */
     async buscarPartides () {
-
       try {
         const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
         const response = await axios.get(`${baseURL}/api/partides`, {
         })
 
-        for (var i=0; i<response.data.length; i++) {
+        for (let i = 0; i < response.data.length; i++) {
           console.log(response.data)
-          var nomPartida = 'Partida ' + i
+          const nomPartida = 'Partida ' + i
           this.partides = [
-            {label: nomPartida, value: response.data[i].partida_pk}
+            { label: nomPartida, value: response.data[i].partida_pk }
           ]
         }
-
       } catch (error) {
         console.error('Error en la cerca:', error)
       }
@@ -90,21 +82,19 @@ export default {
         const response = await axios.get(`${baseURL}/api/partides`, {
         })
 
-        for (var i=0; i<response.data.length; i++) {
+        for (let i = 0; i < response.data.length; i++) {
           console.log(response.data)
-          if(response.data[i].partida_pk == this.partida_escollida){
+          if (response.data[i].partida_pk === this.partida_escollida) {
             this.jugadors = [
-              {label: response.data[i].jugador1, value: 'jugador1'},
-              {label: response.data[i].jugador2, value: 'jugador2'},
-              {label: 'Empat', value: 'EMP'},
+              { label: response.data[i].jugador1, value: 'jugador1' },
+              { label: response.data[i].jugador2, value: 'jugador2' },
+              { label: 'Empat', value: 'EMP' }
             ]
           }
         }
-
       } catch (error) {
         console.error('Error en la cerca:', error)
       }
-
     },
     async enviarResultats () {
       try {
@@ -113,7 +103,7 @@ export default {
         // enviar les dades per a afegir resultats
         const response = await axios.post(`${baseURL}/api/registreresultat`, {
           partida_pk: this.partida_escollida,
-          guanyador: this.jugador_guanyador,
+          guanyador: this.jugador_guanyador
         })
 
         if (response.status === 201) {

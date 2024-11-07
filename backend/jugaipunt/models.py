@@ -18,11 +18,17 @@ class Jugador(models.Model):
 
 # Model que representa una lliga
 class Lliga(models.Model):
+       
+    TIPUS_TORNEIG_CHOICES = [
+        ('Lliga', 'Lliga'),
+        ('TorneigEliminatori', 'TorneigEliminatori'),
+    ]
+       
     nomLliga = models.CharField(max_length=50)  # Nombre de la liga
     dataInici = models.DateField()  # Fecha de inicio
     dataFi = models.DateField()  # Fecha de fin
-    tipusTorneig = models.BooleanField(default=True)  # Tipo de torneo (True/False)
-    usuariAdmin = models.ForeignKey(User, on_delete=models.CASCADE)  # ID del usuario administrador
+    tipusTorneig = models.CharField(max_length=20, choices=TIPUS_TORNEIG_CHOICES, default='Lliga')  # 'liga' o 'torneo'
+    usuariAdmin = models.ForeignKey(Jugador, on_delete=models.CASCADE)  # ID del usuario administrador
     llistaJugadors = models.ManyToManyField(Jugador, related_name="lligues")  # Relación con jugadores
     resultat = models.CharField(max_length=100, blank=True, null=True)  # ID del ganador de la liga (opcional)
 

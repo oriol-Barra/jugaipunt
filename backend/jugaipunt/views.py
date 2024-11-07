@@ -8,6 +8,10 @@ from .models import Jugador , Lliga , Partida
 from django.shortcuts import get_object_or_404
 
 
+
+
+
+
 @csrf_exempt
 def crear_jugador(request):
     if request.method == 'POST':
@@ -59,7 +63,8 @@ def login_view(request):
                     'message': f'Benvingut, {jugador.nom}!',
                     'nom_usuari': jugador.nom, 
                     'id_usuari': jugador.pk, # retorna id usuari
-                    'token': session_token  # Devuelve el token
+                    'token': session_token,  # Devuelve el token
+                    'admin': jugador.admin
                 }, status=200)
             else:
                 return JsonResponse({'error': 'Contrasenya incorrecta.'}, status=400)
@@ -94,6 +99,12 @@ def logout_view(request):
     return JsonResponse({'error': 'Mètode no permès'}, status=405)
 
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import get_object_or_404
+from .models import Lliga, Jugador, Partida
+import json
+
 @csrf_exempt
 def crear_torneig(request):
     if request.method == "POST":
@@ -109,6 +120,16 @@ def crear_torneig(request):
         dataFi = data.get("dataFi")
         tipusTorneig = data.get("tipusTorneig")
         llistaJugadors = data.get("llistaJugadors", [])
+        usuari_id = data.get("usuari")  # Cambié el nombre a 'usuari_id' para mayor claridad
+
+        # Obtener el jugador administrador
+        try:
+            usuari = Jugador.objects.get(id=usuari_id)
+        except Jugador.DoesNotExist:
+            return JsonResponse({"error": "Usuario no encontrado"}, status=404)
+
+        if not usuari.admin:
+            return JsonResponse({"error": "El jugador no es administrador"}, status=403)
 
         # Crear la liga
         lliga = Lliga.objects.create(
@@ -116,20 +137,23 @@ def crear_torneig(request):
             dataInici=dataInici,
             dataFi=dataFi,
             tipusTorneig=tipusTorneig,
-            usuariAdmin=request.user  # Asume que el usuario está autenticado
+            usuariAdmin=usuari  # Asume que el jugador es el administrador
         )
 
-        # Agregar los jugadores seleccionados a la liga
+        # Obtener los jugadores y asignarlos a la liga
+        jugadores = []
         for jugador_data in llistaJugadors:
             jugador_id = jugador_data.get("id")
             if jugador_id:
                 jugador = get_object_or_404(Jugador, id=jugador_id)
-                lliga.llistaJugadors.add(jugador)
+                jugadores.append(jugador)
 
+        # Asignar jugadores a la liga utilizando 'set()' para ManyToMany
+        lliga.llistaJugadors.set(jugadores)
 
         # Generar las partidas si el tipo de torneo es "liga"
         if tipusTorneig == "liga":
-            jugadors = list(lliga.llistaJugadors.all())
+            jugadors = list(lliga.llistaJugadors.all())  # Obtener todos los jugadores asociados a la liga
             for i in range(len(jugadors)):
                 for j in range(i + 1, len(jugadors)):
                     Partida.objects.create(
@@ -137,13 +161,12 @@ def crear_torneig(request):
                         jugador1=jugadors[i],
                         jugador2=jugadors[j]
                     )
-        return JsonResponse({"message": "Lliga creada amb èxit i partides generades!"}, status=201)
-    else:
-        return JsonResponse({"error": "Método no permitido"}, status=405)
-from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
-from .models import Lliga, Jugador, Partida
 
+        return JsonResponse({"message": "Lliga creada amb èxit i partides generades!"}, status=201)
+
+    return JsonResponse({"error": "Método no permitido"}, status=405)
+
+    
 def getUser_view(request, jugador_id):
     try:
         # Buscamos el jugador por su ID
@@ -247,6 +270,23 @@ def registrarResultatPartida(request):
         return JsonResponse({"message": "S'ha desat el resultat amb èxit!"}, status=201)
     else:
         return JsonResponse({"error": "Método no permitido"}, status=405)
+    
+@csrf_exempt    
+def buscar_jugador(request):
+    # Obtener el parámetro 'nom' de la query string
+    nom = request.GET.get('nom', '')
+
+    if nom:
+        # Filtramos los jugadores cuyo nombre contiene el valor de 'nom'
+        jugadores = Jugador.objects.filter(nom__icontains=nom)
+    else:
+        jugadores = Jugador.objects.none()
+
+    # Creamos una lista de diccionarios con los datos que queremos devolver
+    jugadores_data = list(jugadores.values('id', 'nom', 'cognoms'))  # Puedes agregar más campos si lo deseas
+
+    # Devolvemos los datos en formato JSON
+    return JsonResponse(jugadores_data, safe=False)
     
 #@csrf_exempt
 #def getUser_view(request):

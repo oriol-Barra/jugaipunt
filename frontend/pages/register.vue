@@ -80,19 +80,40 @@
           <label class="block text-gray-700" for="num_federat">Número de federat</label>
           <input
             id="num_federat"
-            v-model="edat"
+            v-model="num_federat"
             class="form-input mt-1 block w-full h-12 rounded px-4 border border-gray-300"
             type="number"
             required
             placeholder="Número de federat"
           >
         </div>
+        <div class="mb-4">
+          <label class="block text-gray-700" for="isAdmin">És administrador?</label>
+          <select
+            id="isAdmin"
+            v-model="isAdmin"
+            class="form-select mt-1 block w-full h-12 rounded px-4 border border-gray-300"
+            required
+          >
+            <option value="false">
+              No
+            </option>
+            <option value="true">
+              Sí
+            </option>
+          </select>
+        </div>
 
         <button
           class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 w-full mb-4"
           type="submit"
         >
-          Registre d'usuari
+          <button
+            class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 w-full mb-4"
+            type="submit"
+          >
+            Registre d'usuari
+          </button>
         </button>
       </form>
     </div>

@@ -124,6 +124,7 @@ export default {
       // Comprovar si existeix el token a localStorage
       const token = localStorage.getItem('authToken')
       this.isAuthenticated = !!token // Assignar true o false segons existeixi el token
+      console.log('isAuthenticated:', this.isAuthenticated) // Verificar valor
     },
     checkIsAdmin () {
       // Comprovar si l'usari és admin

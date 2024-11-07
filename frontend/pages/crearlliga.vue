@@ -4,7 +4,7 @@
       <h1 class="text-3xl font-bold mb-8 text-center">
         Registre de Lliga o Torneig
       </h1>
-      <form id="formulariTorneig" @submit.prevent="submit">
+      <form id="formulariTorneig" @submit.prevent="enviarDades"> <!-- Cambiado a enviarDades -->
         <div class="mb-4">
           <label class="block text-gray-700" for="nomLliga">Nom de la Lliga</label>
           <input
@@ -83,7 +83,6 @@
 </template>
 
 <script>
-
 export default {
   data () {
     return {
@@ -95,7 +94,7 @@ export default {
     }
   },
   methods: {
-    enviarDades () {
+    enviarDades () { // Cambiado a enviarDades para coincidir con @submit.prevent
       try {
         // Reinicialitzar el formulari
         document.getElementById('formulariTorneig').reset()
@@ -117,7 +116,6 @@ export default {
     }
   }
 }
-
 </script>
 
 <style scoped>
