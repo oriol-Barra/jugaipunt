@@ -67,9 +67,7 @@ export default {
         for (let i = 0; i < response.data.length; i++) {
           console.log(response.data)
           const nomPartida = 'Partida ' + i
-          this.partides = [
-            { label: nomPartida, value: response.data[i].partida_pk }
-          ]
+          this.partides.push({ label: nomPartida, value: response.data[i].partida_pk })
         }
       } catch (error) {
         console.error('Error en la cerca:', error)
