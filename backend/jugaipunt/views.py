@@ -209,10 +209,44 @@ def getPartides(request):
         llista_partides.append({
             'partida_pk': partida.pk,
             'jugador1': partida.jugador1.nom,
-            'jugador2': partida.jugador2.nom
+            'jugador1_pk': partida.jugador1.pk,
+            'jugador2': partida.jugador2.nom,
+            'jugador2_pk': partida.jugador2.pk,
         })
        
     return JsonResponse(llista_partides, safe=False)
+
+@csrf_exempt
+def registrarResultatPartida(request): 
+    """Funció per a registrar els resultats de les partides"""
+
+    if request.method == "POST":
+        # Cargar los datos JSON del cuerpo de la solicitud
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON data"}, status=400)
+
+        # Dades resultat 
+        partida_pk = data.get("partida_pk")
+        guanyador = data.get("guanyador")
+
+        print(partida_pk)
+        print(guanyador)
+
+        partida = Partida.objects.filter(pk=partida_pk)
+
+        if(guanyador == 'jugador1'):
+            partida.update(resultat='VJ1')
+        if(guanyador == 'jugador2'):
+            partida.update(resultat='VJ2')
+        if(guanyador == 'EMP'):
+            partida.update(resultat='EMP')
+        
+
+        return JsonResponse({"message": "S'ha desat el resultat amb èxit!"}, status=201)
+    else:
+        return JsonResponse({"error": "Método no permitido"}, status=405)
     
 #@csrf_exempt
 #def getUser_view(request):

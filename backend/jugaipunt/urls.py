@@ -8,6 +8,5 @@ urlpatterns = [
     path('noutorneig', views.crear_torneig, name='creartorneig/'),  # Ruta per a la creació d'un nou torneig
     path('dashboard', views.crear_torneig, name='infoJugador/'),  # Ruta per a la creació d'un nou torneig
     path('partides', views.getPartides, name='getPartides/'),  # Ruta per obtenir les partides
-
-
-]
+    path('registreresultat', views.registrarResultatPartida, name='registreresultat/'),  # Ruta per a registrar resultats
+]   
