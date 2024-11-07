@@ -26,7 +26,7 @@
       <div class="flex space-x-4">
         <template v-if="isAuthenticated">
           <!--Botó Menú-->
-          <UButton v-if="isAdmin" label="Menú" @click="menuIsOpen = true" />
+          <UButton label="Menú" @click="menuIsOpen = true" />
           <!--Contingut del panell-->
           <USlideover v-model="menuIsOpen" :overlay="false">
             <UCard class="flex flex-col flex-1" :ui="{ body: { base: 'flex-1' }, ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
@@ -117,7 +117,7 @@ export default {
   },
   mounted () {
     this.checkAuthentication() // Comprova l'autenticació en muntar el component
-    // this.checkIsAdmin()
+    this.checkIsAdmin()
   },
   methods: {
     checkAuthentication () {
@@ -131,7 +131,11 @@ export default {
       // this.isAdmin = false // TO DO -- obtenir dades de l'endpoint
       // const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
       try {
-        // const response = axios.get(`${baseURL}/api/jugador/dades/`) // TO-DO. Acabar de concretar quin és l'endpoint
+        if (localStorage.getItem('admin') === 'true') {
+          this.isAdmin = true
+        } else {
+          this.isAdmin = false
+        }
       } catch (error) {
         console.log(error)
       }
