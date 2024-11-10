@@ -25,11 +25,11 @@ git clone --branch eudaldgr https://github.com/jugaripunt/jugaripunt.git
 cd jugaripunt || exit
 
 # Create database
+doas rc-service postgresql start
+doas rc-update add postgresql
 printf "%s\n" \
     "local   all             jugaripunt                               peer" \
     | doas tee -a /etc/postgresql/pg_hba.conf
-doas rc-service postgresql start
-doas rc-update add postgresql
 doas -u postgres psql -f create_database.sql
 
 # Run migrations
@@ -40,7 +40,7 @@ NUXT_TELEMETRY_DISABLED=1 npm install --prefix ./frontend
 
 # Create .env file
 printf "%s\n" \
-    "API_BASE_URL=http://127.0.0.1:80" \
+    "VUE_APP_API_BASE_URL=http://127.0.0.1:80" \
     > ./frontend/.env
 
 # Build frontend

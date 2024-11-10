@@ -51,7 +51,7 @@ export default {
   methods: {
     async submit () {
       try {
-        const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
+        const baseURL = process.env.VUE_APP_API_BASE_URL || 'http://localhost:8000'
         const response = await axios.post(`${baseURL}/api/login`, {
           email: this.email,
           contrasenya: this.password

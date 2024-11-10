@@ -132,7 +132,7 @@ export default {
     checkIsAdmin () {
       // Comprovar si l'usari és admin
       // this.isAdmin = false // TO DO -- obtenir dades de l'endpoint
-      // const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
+      // const baseURL = process.env.VUE_APP_API_BASE_URL || 'http://localhost:8000'
       try {
         if (localStorage.getItem('admin') === 'true') {
           this.isAdmin = true
@@ -146,7 +146,7 @@ export default {
     async logout () {
       try {
         const token = localStorage.getItem('authToken') // Obtenir el token del localStorage
-        const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
+        const baseURL = process.env.VUE_APP_API_BASE_URL || 'http://localhost:8000'
 
         // Enviar el token en el cos de la sol·licitud
         await axios.post(`${baseURL}/api/logout`, { token })

@@ -60,7 +60,7 @@ export default {
     /** Busquem les partides disponibles i les afegim al llistat */
     async buscarPartides () {
       try {
-        const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
+        const baseURL = process.env.VUE_APP_API_BASE_URL || 'http://localhost:8000'
         const response = await axios.get(`${baseURL}/api/partides`, {
         })
 
@@ -76,7 +76,7 @@ export default {
     /** En funció de la partida escollida, mostrem les opcions de resultats */
     async onSelectPartida () {
       try {
-        const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
+        const baseURL = process.env.VUE_APP_API_BASE_URL || 'http://localhost:8000'
         const response = await axios.get(`${baseURL}/api/partides`, {
         })
 
@@ -96,7 +96,7 @@ export default {
     },
     async enviarResultats () {
       try {
-        const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
+        const baseURL = process.env.VUE_APP_API_BASE_URL || 'http://localhost:8000'
 
         // enviar les dades per a afegir resultats
         const response = await axios.post(`${baseURL}/api/registreresultat`, {
