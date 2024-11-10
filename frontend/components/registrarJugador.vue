@@ -79,7 +79,8 @@ export default {
   methods: {
     async submit () {
       try {
-        const response = await axios.post('http://localhost:8000/api/jugador/jugador/', {
+        const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
+        const response = await axios.post(`${baseURL}/api/jugador/jugador/`, {
           nom: this.name,
           cognoms: this.cognoms,
           edat: this.edad,

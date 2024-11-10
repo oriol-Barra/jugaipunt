@@ -51,7 +51,8 @@ export default {
   methods: {
     async submit () {
       try {
-        const response = await axios.post('http://localhost:8000/api/login', {
+        const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
+        const response = await axios.post(`${baseURL}/api/login`, {
           email: this.email,
           contrasenya: this.password
         })

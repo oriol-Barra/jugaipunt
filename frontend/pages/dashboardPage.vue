@@ -65,8 +65,9 @@ export default {
         if (!jugador_id) {
           throw new Error('Jugador ID no encontrado en localStorage')
         }
+        const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
         // eslint-disable-next-line camelcase
-        const response = await axios.get(`http://localhost:8000/api/dashboard/${jugador_id}`)
+        const response = await axios.get(`${baseURL}/api/dashboard/${jugador_id}`)
         this.userData = response.data
       } catch (error) {
         this.error = 'No s\'han pogut carregar les dades de l\'usuari'
