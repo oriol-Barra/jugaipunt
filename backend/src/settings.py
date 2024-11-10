@@ -89,7 +89,7 @@ DATABASES = {
 # POSTGIS DATABASE 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'jugaripunt',
         'USER': 'grup2',
         'PASSWORD': 'grup2',
