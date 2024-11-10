@@ -15,7 +15,8 @@ doas adduser \
     jugaripunt
 
 # Install packages
-doas apk add --virtual .project-deps caddy git nodejs npm postgresql py3-django py3-django-cors-headers py3-django-rest-framework py3-gunicorn py3-psycopg2 python3
+doas apk add --virtual .build-deps   git npm
+doas apk add --virtual .project-deps caddy nodejs postgresql py3-django py3-django-cors-headers py3-django-rest-framework py3-gunicorn py3-psycopg2 python3
 
 # Clone repository
 cd /tmp || exit
@@ -30,7 +31,7 @@ doas rc-update add postgresql
 printf "%s\n" \
     "local   all             jugaripunt                               peer" \
     | doas tee -a /etc/postgresql/pg_hba.conf
-doas -u postgres psql -f create_database.sql
+doas -u postgres psql -f ./config/create_database.sql
 
 # Run migrations
 python ./backend/manage.py migrate
@@ -41,9 +42,9 @@ python ./backend/manage.py collectstatic --noinput
 # Install node dependencies
 NUXT_TELEMETRY_DISABLED=1 npm install --prefix ./frontend
 
-# Create .env file 10.1.20.100:80 is an example
+# Create .env file https://jugaripunt.eudald.gr is an example
 printf "%s\n" \
-    "NUXT_PUBLIC_API_BASE_URL=https://10.1.20.100:80" > ./frontend/.env
+    "NUXT_PUBLIC_API_BASE_URL=https://jugaripunt.eudald.gr" > ./frontend/.env
 
 # Build frontend
 NUXT_TELEMETRY_DISABLED=1 npm run generate --prefix ./frontend
@@ -58,7 +59,7 @@ doas cp -r ./frontend/.output/public/* /var/www/jugaripunt
 doas cp -r ./backend/* /var/lib/jugaripunt
 
 # Deploy init script
-doas cp ./init.sh /etc/init.d/jugaripunt
+doas cp ./config/init.sh /etc/init.d/jugaripunt
 doas chmod +x /etc/init.d/jugaripunt
 
 # Start jugaripunt
@@ -66,7 +67,10 @@ doas rc-service jugaripunt start
 doas rc-update add jugaripunt
 
 # Deploy Caddyfile
-doas cp ./Caddyfile /etc/caddy/Caddyfile
+doas cp ./config/Caddyfile /etc/caddy/Caddyfile
 
 # Start Caddy
 doas rc-service caddy start
+
+# Clean up
+doas apk del .build-deps
