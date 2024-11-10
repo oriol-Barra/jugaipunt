@@ -108,12 +108,7 @@
           class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 w-full mb-4"
           type="submit"
         >
-          <button
-            class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 w-full mb-4"
-            type="submit"
-          >
-            Registre d'usuari
-          </button>
+          Registre d'usuari
         </button>
       </form>
     </div>
