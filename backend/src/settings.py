@@ -24,8 +24,6 @@ SECRET_KEY = 'django-insecure-&kw3z$h2)dvrg58)d^9vwin0n@%bn%b*ptlnjn6n2@)km!t1$v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -127,6 +125,12 @@ STATIC_ROOT = BASE_DIR / 'static'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8086",  # Aquí pon el puerto donde tu frontend corre
-]
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = False
+
+ALLOWED_HOSTS = ['*']
+
+CRFS_TRUSTED_ORIGINS = ['*']
+
+APPEND_SLASH = False

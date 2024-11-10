@@ -35,16 +35,18 @@ doas -u postgres psql -f create_database.sql
 # Run migrations
 python ./backend/manage.py migrate
 
+# Make static files
+python ./backend/manage.py collectstatic --noinput
+
 # Install node dependencies
 NUXT_TELEMETRY_DISABLED=1 npm install --prefix ./frontend
 
-# Create .env file
+# Create .env file 10.1.20.100:80 is an example
 printf "%s\n" \
-    "VUE_APP_API_BASE_URL=http://127.0.0.1:80" \
-    > ./frontend/.env
+    "NUXT_PUBLIC_API_BASE_URL=https://10.1.20.100:80" > ./frontend/.env
 
 # Build frontend
-npm run generate --prefix ./frontend
+NUXT_TELEMETRY_DISABLED=1 npm run generate --prefix ./frontend
 
 # Create directories
 doas mkdir -p /var/www/jugaripunt /var/lib/jugaripunt

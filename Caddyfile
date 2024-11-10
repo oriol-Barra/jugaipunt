@@ -4,11 +4,26 @@
     }
 }
 
+(cors) {
+    @origin header Origin {args[0]}
+    header @origin Access-Control-Allow-Origin "{args[0]}"
+    header @origin Access-Control-Allow-Methods "OPTIONS,HEAD,GET,POST,PUT,PATCH,DELETE"
+}
+
 :80 {
     root * /var/www/jugaripunt
     file_server
 
-    reverse_proxy /api/* unix//var/run/jugaripunt/jugaripunt.sock
+    handle /static/* {
+        root * /var/lib/jugaripunt/static
+        file_server
+    }
+
+    handle /api/* {
+        reverse_proxy unix//var/run/jugaripunt/jugaripunt.sock {
+            import cors *
+        }
+    }
 
     encode gzip
 
