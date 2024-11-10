@@ -43,6 +43,7 @@
 
 <script>
 import axios from 'axios'
+import { useRuntimeConfig } from '#app'
 
 export default {
   name: 'DashboardPage',
@@ -65,7 +66,8 @@ export default {
         if (!jugador_id) {
           throw new Error('Jugador ID no encontrado en localStorage')
         }
-        const baseURL = process.env.VUE_APP_API_BASE_URL || 'http://localhost:8000'
+        const config = useRuntimeConfig()
+        const baseURL = config.public.apiBaseUrl
         // eslint-disable-next-line camelcase
         const response = await axios.get(`${baseURL}/api/dashboard/${jugador_id}`)
         this.userData = response.data

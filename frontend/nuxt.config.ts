@@ -23,6 +23,12 @@ export default defineNuxtConfig({
     }
   },
 
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:8000'
+    }
+  },
+
   pages: true,
 
   // Global CSS: https://go.nuxtjs.dev/config-css
