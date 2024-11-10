@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'jugaipunt',
+    'jugaripunt',
     'rest_framework',
     'corsheaders',
 ]
@@ -90,7 +90,7 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'jugaipunt',
+        'NAME': 'jugaripunt',
         'USER': 'grup2',
         'PASSWORD': 'grup2',
         'HOST': 'db',

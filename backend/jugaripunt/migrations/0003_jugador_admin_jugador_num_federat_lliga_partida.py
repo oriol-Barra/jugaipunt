@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('jugaipunt', '0002_jugador_session_token'),
+        ('jugaripunt', '0002_jugador_session_token'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
                 ('dataFi', models.DateField()),
                 ('tipusTorneig', models.BooleanField(default=True)),
                 ('resultat', models.CharField(blank=True, max_length=100, null=True)),
-                ('llistaJugadors', models.ManyToManyField(related_name='lligues', to='jugaipunt.jugador')),
+                ('llistaJugadors', models.ManyToManyField(related_name='lligues', to='jugaripunt.jugador')),
                 ('usuariAdmin', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
@@ -41,9 +41,9 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('resultat', models.CharField(blank=True, choices=[('VJ1', 'Victòria Jugador 1'), ('VJ2', 'Victòria Jugador 2'), ('EMP', 'Empat')], max_length=3, null=True)),
-                ('jugador1', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='partides_jugador1', to='jugaipunt.jugador')),
-                ('jugador2', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='partides_jugador2', to='jugaipunt.jugador')),
-                ('lliga', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='partides', to='jugaipunt.lliga')),
+                ('jugador1', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='partides_jugador1', to='jugaripunt.jugador')),
+                ('jugador2', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='partides_jugador2', to='jugaripunt.jugador')),
+                ('lliga', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='partides', to='jugaripunt.lliga')),
             ],
         ),
     ]

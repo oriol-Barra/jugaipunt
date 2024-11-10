@@ -7,13 +7,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('jugaipunt', '0003_jugador_admin_jugador_num_federat_lliga_partida'),
+        ('jugaripunt', '0003_jugador_admin_jugador_num_federat_lliga_partida'),
     ]
 
     operations = [
         migrations.AlterField(
             model_name='lliga',
             name='usuariAdmin',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='jugaipunt.jugador'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='jugaripunt.jugador'),
         ),
     ]
