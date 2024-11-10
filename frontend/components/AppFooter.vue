@@ -1,5 +1,5 @@
 <template>
-  <footer class="p-4 bg-black text-slate-800 dark:bg-slate-800 dark:text-white">
+  <footer class="p-4 bg-white text-slate-800 dark:bg-slate-800 dark:text-white">
     <div class="container mx-auto flex justify-between items-center">
       <nuxt-link to="/" class="text-2xl font-bold">
         Copyright grup 2 - Juga i punt -  2024
