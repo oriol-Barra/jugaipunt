@@ -8,7 +8,7 @@
     root * /var/www/jugaripunt
     file_server
 
-    reverse_proxy /api/* 127.0.0.1:8000
+    reverse_proxy /api/* unix//var/run/jugaripunt/jugaripunt.sock
 
     encode gzip
 

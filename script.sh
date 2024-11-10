@@ -2,8 +2,20 @@
 # Simple script initialize jugaripunt on Alpine Linux VM
 set -x
 
+# Create the jugaripunt user/group
+doas addgroup -S jugaripunt
+doas adduser \
+    -S \
+    -D \
+    -H \
+    -h /dev/null \
+    -s /sbin/nologin \
+    -G jugaripunt \
+    -g jugaripunt \
+    jugaripunt
+
 # Install packages
-doas apk add --virtual .project-deps caddy gcc gdal git libpq-dev musl-dev nodejs npm postgresql py3-pip python3 python3-dev
+doas apk add --virtual .project-deps caddy git nodejs npm postgresql py3-django py3-django-cors-headers py3-django-rest-framework py3-gunicorn py3-psycopg2 python3
 
 # Clone repository
 cd /tmp || exit
@@ -13,36 +25,46 @@ git clone --branch eudaldgr https://github.com/jugaripunt/jugaripunt.git
 cd jugaripunt || exit
 
 # Create database
+printf "%s\n" \
+    "local   all             jugaripunt                               peer" \
+    | doas tee -a /etc/postgresql/pg_hba.conf
 doas rc-service postgresql start
 doas rc-update add postgresql
 doas -u postgres psql -f create_database.sql
 
-# Install python dependencies
-python -m venv ./venv
-# shellcheck source=/dev/null
-. ./venv/bin/activate
-pip install -r ./backend/requirements.txt
-
 # Run migrations
 python ./backend/manage.py migrate
 
-# Collect static files
-python ./backend/manage.py collectstatic --noinput
-
-# Run backend
-python ./backend/manage.py runserver
-
 # Install node dependencies
-npm install --omit=dev --omit=optional --prefix ./frontend
+NUXT_TELEMETRY_DISABLED=1 npm install --prefix ./frontend
+
+# Create .env file
+printf "%s\n" \
+    "API_BASE_URL=http://127.0.0.1:80" \
+    > ./frontend/.env
 
 # Build frontend
 npm run generate --prefix ./frontend
 
+# Create directories
+doas mkdir -p /var/www/jugaripunt /var/lib/jugaripunt
+
 # Deploy static files
-cp -r ./frontend/output/public/* /var/www/jugaripunt
+doas cp -r ./frontend/.output/public/* /var/www/jugaripunt
+
+# Deploy backend
+doas cp -r ./backend/* /var/lib/jugaripunt
+
+# Deploy init script
+doas cp ./init.sh /etc/init.d/jugaripunt
+doas chmod +x /etc/init.d/jugaripunt
+
+# Start jugaripunt
+doas rc-service jugaripunt start
+doas rc-update add jugaripunt
 
 # Deploy Caddyfile
-cp ./Caddyfile /etc/caddy/Caddyfile
+doas cp ./Caddyfile /etc/caddy/Caddyfile
 
 # Start Caddy
 doas rc-service caddy start

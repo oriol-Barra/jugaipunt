@@ -2,7 +2,11 @@
 CREATE DATABASE jugaripunt;
 
 -- Crea l'usuari
-CREATE USER grup2 WITH PASSWORD 'grup2';
+CREATE USER jugaripunt;
 
 -- Atorga permisos a l'usuari
-GRANT ALL PRIVILEGES ON DATABASE jugaripunt TO grup2;
+GRANT ALL PRIVILEGES ON DATABASE jugaripunt TO jugaripunt;
+
+-- Concedeix permisos a l'esquema 'public'
+\c jugaripunt
+GRANT ALL ON SCHEMA public TO jugaripunt;
