@@ -1,8 +1,15 @@
-**/.nuxt
+# Frontend
 **/.eslintcache
+**/.nuxt
+**/.output
+**/build
+**/dist
 **/node_modules
 
-**/.output
-**/dist
+# Backend
+**/__pycache__
+**/*.py[cod]
+**/static
+
+# Environment variables
 **/.env
-/backend/src/settings.py
