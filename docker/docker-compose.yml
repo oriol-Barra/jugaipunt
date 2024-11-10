@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgis/postgis:13-3.1
+    environment:
+      POSTGRES_DB: jugaripunt
+      POSTGRES_USER: grup2
+      POSTGRES_PASSWORD: grup2
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+  web:
+    build: . # Cambia esta ruta si tu Dockerfile está en otro lugar
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/code # Asegúrate de que esta carpeta existe
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DEBUG=1
+      - DATABASE_URL=postgres://grup2:grup2@db:5432/jugaripunt
+
+  frontend:
+    build: ./frontend # Cambia esta ruta a donde está tu Dockerfile para Vue
+    volumes:
+      - ./frontend:/app # Cambia esta ruta si tu proyecto está en otro lugar
+    ports:
+      - "8086:3000" # Cambiamos el puerto a 3000, que es el predeterminado de Nuxt.js
+    environment:
+      - NODE_ENV=development # Cambia a 'development' para habilitar HMR
+    command: sh -c "npm install @nuxt/ui && npm run dev" # Instala Nuxt UI y luego ejecuta el comando de desarrollo
