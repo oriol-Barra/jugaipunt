@@ -20,9 +20,8 @@
     }
 
     handle /api/* {
-        reverse_proxy unix//var/run/jugaripunt/jugaripunt.sock {
-            import cors *
-        }
+        import cors *
+        reverse_proxy unix//var/run/jugaripunt/jugaripunt.sock
     }
 
     encode gzip
