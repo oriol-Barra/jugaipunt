@@ -153,6 +153,7 @@ export default {
 
         // Eliminar el token de localStorage
         localStorage.removeItem('authToken')
+        localStorage.clear()
 
         // Actualitzar l'estat
         this.isAuthenticated = false

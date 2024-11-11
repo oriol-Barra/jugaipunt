@@ -120,7 +120,7 @@ def crear_torneig(request):
         dataFi = data.get("dataFi")
         tipusTorneig = data.get("tipusTorneig")
         llistaJugadors = data.get("llistaJugadors", [])
-        usuari_id = data.get("usuari")  # Cambié el nombre a 'usuari_id' para mayor claridad
+        usuari_id = data.get("usuari")  
 
         # Obtener el jugador administrador
         try:
@@ -141,18 +141,18 @@ def crear_torneig(request):
         )
 
         # Obtener los jugadores y asignarlos a la liga
-        jugadores = []
+        jugadors = []
         for jugador_data in llistaJugadors:
             jugador_id = jugador_data.get("id")
             if jugador_id:
                 jugador = get_object_or_404(Jugador, id=jugador_id)
-                jugadores.append(jugador)
+                jugadors.append(jugador)
 
         # Asignar jugadores a la liga utilizando 'set()' para ManyToMany
-        lliga.llistaJugadors.set(jugadores)
+        lliga.llistaJugadors.set(jugadors)
 
         # Generar las partidas si el tipo de torneo es "liga"
-        if tipusTorneig == "liga":
+        if tipusTorneig == "Lliga":
             jugadors = list(lliga.llistaJugadors.all())  # Obtener todos los jugadores asociados a la liga
             for i in range(len(jugadors)):
                 for j in range(i + 1, len(jugadors)):

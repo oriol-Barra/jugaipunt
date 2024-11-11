@@ -112,7 +112,7 @@ export default {
       this.jugadorSeleccionat = jugador
       // Afegir el jugador seleccionat a la llista local de jugadors afegits
       this.jugadorsAfegits.push(this.jugadorSeleccionat)
-      // si la llista de jugadors és igual al número de jugaodrs que ha de tenir la lliga enviem alert indicant que tot està correcte.
+      // si la llista de jugadors és igual al número de jugadors que ha de tenir la lliga enviem alert indicant que tot està correcte.
       if (this.jugadorsAfegits.length === parseInt(this.numJugadors)) {
         alert("tots els jugadors ja han sigut registrats, si desitjes donar d'alta la lliga prem el botó")
       // Si encara falten jugadors avisem
