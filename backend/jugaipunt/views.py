@@ -166,18 +166,13 @@ def crear_torneig(request):
 
     return JsonResponse({"error": "Método no permitido"}, status=405)
 
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from .models import Jugador, Partida
-
-@csrf_exempt
+@csrf_exempt   
 def getUser_view(request, jugador_id):
     try:
-        # Intentamos obtener el jugador
+        # Buscamos el jugador por su ID
         jugador = Jugador.objects.get(id=jugador_id)
-        print("Jugador encontrado:", jugador)  # Debugging print
     except Jugador.DoesNotExist:
-        print("Jugador no encontrado.")  # Debugging print
+        # Error en caso de que no lo encuentre
         return JsonResponse({'error': 'Jugador no trobat.'}, status=404)
 
     # Datos del jugador
@@ -195,17 +190,20 @@ def getUser_view(request, jugador_id):
     lligues = jugador.lligues.all()
     lligues_data = []
     for lliga in lligues:
+        # Solo devolvemos el nombre de la liga
         lligues_data.append({
             'lliga_id': lliga.id,
             'nomLliga': lliga.nomLliga
         })
 
+    # Añadimos la información de las ligas al JSON de respuesta del jugador
     jugador_data['lligues'] = lligues_data
 
-    # Listar todas las partidas en las que participa el jugador
+    # Listar todas las partidas en las que el jugador participa
     partides_data = []
     partides = Partida.objects.filter(jugador1=jugador) | Partida.objects.filter(jugador2=jugador)
     for partida in partides:
+        # Determinamos el contrincante
         contrincant = partida.jugador2 if partida.jugador1 == jugador else partida.jugador1
         partides_data.append({
             'partida_id': partida.id,
@@ -217,11 +215,10 @@ def getUser_view(request, jugador_id):
             'resultat': partida.get_resultat_display() if partida.resultat else "Pendiente"
         })
 
+    # Añadimos las partidas al JSON de respuesta del jugador
     jugador_data['partides'] = partides_data
 
-    # Verificación final del JSON que se envía
-    print("Datos de jugador_data que se retornan:", jugador_data)  # Debugging print
-
+    # Retornamos todos los datos del jugador, incluyendo las ligas (solo nombre) y partidas
     return JsonResponse(jugador_data)
 
 @csrf_exempt

@@ -50,10 +50,10 @@
             <option value="">
               Selecciona un tipus
             </option>
-            <option value="liga">
+            <option value="Lliga">
               Lliga
             </option>
-            <option value="torneigEliminatori">
+            <option value="TorneigEliminatori">
               Torneig Eliminatori
             </option>
           </select>

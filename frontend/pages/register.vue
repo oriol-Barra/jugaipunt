@@ -95,10 +95,10 @@
             class="form-select mt-1 block w-full h-12 rounded px-4 border border-gray-300"
             required
           >
-            <option value="false">
+            <option value="False">
               No
             </option>
-            <option value="true">
+            <option value="True">
               Sí
             </option>
           </select>
@@ -132,7 +132,8 @@ export default {
       nom: '',
       cognoms: '',
       edat: '',
-      num_federat: ''
+      num_federat: '',
+      isAdmin: ''
     }
   },
   methods: {
@@ -151,7 +152,8 @@ export default {
           nom: this.nom,
           cognoms: this.cognoms,
           edat: this.edat,
-          num_federat: this.num_federat
+          num_federat: this.num_federat,
+          admin: this.isAdmin
         })
 
         if (response.status === 201) {
