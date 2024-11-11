@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.auth.models import User  # Si estás utilizant el model d'usuari de Django
+from django.db import models
 
 # Model que representa un jugador
 class Jugador(models.Model):
@@ -18,12 +18,11 @@ class Jugador(models.Model):
 
 # Model que representa una lliga
 class Lliga(models.Model):
-       
     TIPUS_TORNEIG_CHOICES = [
         ('Lliga', 'Lliga'),
         ('TorneigEliminatori', 'TorneigEliminatori'),
     ]
-       
+
     nomLliga = models.CharField(max_length=50)  # Nombre de la liga
     dataInici = models.DateField()  # Fecha de inicio
     dataFi = models.DateField()  # Fecha de fin
@@ -34,14 +33,14 @@ class Lliga(models.Model):
 
     def __str__(self):
         return f"{self.nomLliga} - {self.dataInici} a {self.dataFi}"
-    
+
 class Partida(models.Model):
      RESULTATS = [
         ('VJ1', 'Victòria Jugador 1'),
         ('VJ2', 'Victòria Jugador 2'),
         ('EMP', 'Empat')
     ]
-     
+
      lliga = models.ForeignKey(Lliga, on_delete=models.CASCADE, related_name="partides")
      jugador1 = models.ForeignKey(Jugador, on_delete=models.CASCADE, related_name="partides_jugador1")
      jugador2 = models.ForeignKey(Jugador, on_delete=models.CASCADE, related_name="partides_jugador2")
@@ -49,4 +48,3 @@ class Partida(models.Model):
 
      def __str__(self):
         return f"{self.jugador1.nom} vs {self.jugador2.nom} - Lliga: {self.lliga.nomLliga} - Resultat: {self.get_resultat_display() if self.resultat else 'Pendent'}"
-
