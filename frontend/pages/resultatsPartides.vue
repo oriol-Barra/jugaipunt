@@ -68,7 +68,7 @@ export default {
 
         for (let i = 0; i < response.data.length; i++) {
           console.log(response.data)
-          const nomPartida = 'Partida ' + i
+          const nomPartida = 'Partida ' + response.data[i].jugador1 + ' contra ' + response.data[i].jugador2
           this.partides.push({ label: nomPartida, value: response.data[i].partida_pk })
         }
       } catch (error) {
@@ -82,10 +82,9 @@ export default {
         const baseURL = config.public.apiBaseUrl
         const response = await axios.get(`${baseURL}/api/partides`, {
         })
-
         for (let i = 0; i < response.data.length; i++) {
-          console.log(response.data)
-          if (response.data[i].partida_pk === this.partida_escollida) {
+          // eslint-disable-next-line eqeqeq
+          if (this.partida_escollida == response.data[i].partida_pk) {
             this.jugadors = [
               { label: response.data[i].jugador1, value: 'jugador1' },
               { label: response.data[i].jugador2, value: 'jugador2' },

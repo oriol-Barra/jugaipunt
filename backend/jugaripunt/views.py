@@ -120,7 +120,7 @@ def crear_torneig(request):
         dataFi = data.get("dataFi")
         tipusTorneig = data.get("tipusTorneig")
         llistaJugadors = data.get("llistaJugadors", [])
-        usuari_id = data.get("usuari")  # Cambié el nombre a 'usuari_id' para mayor claridad
+        usuari_id = data.get("usuari")  
 
         # Obtener el jugador administrador
         try:
@@ -141,18 +141,18 @@ def crear_torneig(request):
         )
 
         # Obtener los jugadores y asignarlos a la liga
-        jugadores = []
+        jugadors = []
         for jugador_data in llistaJugadors:
             jugador_id = jugador_data.get("id")
             if jugador_id:
                 jugador = get_object_or_404(Jugador, id=jugador_id)
-                jugadores.append(jugador)
+                jugadors.append(jugador)
 
         # Asignar jugadores a la liga utilizando 'set()' para ManyToMany
-        lliga.llistaJugadors.set(jugadores)
+        lliga.llistaJugadors.set(jugadors)
 
         # Generar las partidas si el tipo de torneo es "liga"
-        if tipusTorneig == "liga":
+        if tipusTorneig == "Lliga":
             jugadors = list(lliga.llistaJugadors.all())  # Obtener todos los jugadores asociados a la liga
             for i in range(len(jugadors)):
                 for j in range(i + 1, len(jugadors)):
@@ -166,18 +166,13 @@ def crear_torneig(request):
 
     return JsonResponse({"error": "Método no permitido"}, status=405)
 
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from .models import Jugador, Partida
-
-@csrf_exempt
+@csrf_exempt   
 def getUser_view(request, jugador_id):
     try:
-        # Intentamos obtener el jugador
+        # Buscamos el jugador por su ID
         jugador = Jugador.objects.get(id=jugador_id)
-        print("Jugador encontrado:", jugador)  # Debugging print
     except Jugador.DoesNotExist:
-        print("Jugador no encontrado.")  # Debugging print
+        # Error en caso de que no lo encuentre
         return JsonResponse({'error': 'Jugador no trobat.'}, status=404)
 
     # Datos del jugador
@@ -195,17 +190,20 @@ def getUser_view(request, jugador_id):
     lligues = jugador.lligues.all()
     lligues_data = []
     for lliga in lligues:
+        # Solo devolvemos el nombre de la liga
         lligues_data.append({
             'lliga_id': lliga.id,
             'nomLliga': lliga.nomLliga
         })
 
+    # Añadimos la información de las ligas al JSON de respuesta del jugador
     jugador_data['lligues'] = lligues_data
 
-    # Listar todas las partidas en las que participa el jugador
+    # Listar todas las partidas en las que el jugador participa
     partides_data = []
     partides = Partida.objects.filter(jugador1=jugador) | Partida.objects.filter(jugador2=jugador)
     for partida in partides:
+        # Determinamos el contrincante
         contrincant = partida.jugador2 if partida.jugador1 == jugador else partida.jugador1
         partides_data.append({
             'partida_id': partida.id,
@@ -217,11 +215,10 @@ def getUser_view(request, jugador_id):
             'resultat': partida.get_resultat_display() if partida.resultat else "Pendiente"
         })
 
+    # Añadimos las partidas al JSON de respuesta del jugador
     jugador_data['partides'] = partides_data
 
-    # Verificación final del JSON que se envía
-    print("Datos de jugador_data que se retornan:", jugador_data)  # Debugging print
-
+    # Retornamos todos los datos del jugador, incluyendo las ligas (solo nombre) y partidas
     return JsonResponse(jugador_data)
 
 @csrf_exempt
