@@ -76,11 +76,44 @@
           >
         </div>
 
+        <div class="mb-4">
+          <label class="block text-gray-700" for="num_federat">Número de federat</label>
+          <input
+            id="num_federat"
+            v-model="num_federat"
+            class="form-input mt-1 block w-full h-12 rounded px-4 border border-gray-300"
+            type="number"
+            required
+            placeholder="Número de federat"
+          >
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700" for="isAdmin">És administrador?</label>
+          <select
+            id="isAdmin"
+            v-model="isAdmin"
+            class="form-select mt-1 block w-full h-12 rounded px-4 border border-gray-300"
+            required
+          >
+            <option value="False">
+              No
+            </option>
+            <option value="True">
+              Sí
+            </option>
+          </select>
+        </div>
+
         <button
           class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 w-full mb-4"
           type="submit"
         >
-          Registre d'usuari
+          <button
+            class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 w-full mb-4"
+            type="submit"
+          >
+            Registre d'usuari
+          </button>
         </button>
       </form>
     </div>
@@ -90,17 +123,17 @@
 <script>
 import axios from 'axios' // Importa Axios per a realizar sol·licituds
 
-
 export default {
   data () {
     return {
       email: '',
       password: '',
       passwordRepeat: '', // Añadir esta línea para almacenar la contraseña repetida
-
       nom: '',
       cognoms: '',
-      edat: ''
+      edat: '',
+      num_federat: '',
+      isAdmin: ''
     }
   },
   methods: {
@@ -109,18 +142,18 @@ export default {
       if (this.password !== this.passwordRepeat) {
         alert('Les contrasenyes no coincideixen. Si us plau, intenta-ho de nou.')
         return // No enviar la solicitud si las contraseñas no coinciden
-
       }
 
       try {
-        const baseURL = process.env.API_BASE_URL || 'http://localhost:3000'
-        const response = await axios.post(`${baseURL}/api/jugador/jugador/`, {
+        const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
+        const response = await axios.post(`${baseURL}/api/jugador`, {
           email: this.email,
           contrasenya: this.password, // Solo se envía la contraseña
-
           nom: this.nom,
           cognoms: this.cognoms,
-          edat: this.edat
+          edat: this.edat,
+          num_federat: this.num_federat,
+          admin: this.isAdmin
         })
 
         if (response.status === 201) {

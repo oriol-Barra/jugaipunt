@@ -65,23 +65,35 @@ export default {
   methods: {
     async submit () {
       try {
-        const response = await axios.post('http://localhost:8000/api/jugador/login/', {
+        const response = await axios.post('http://localhost:8000/api/login', {
           email: this.email,
           contrasenya: this.password
         })
         if (response.status === 200) {
           const token = response.data.token
+          const idUsuari = response.data.id_usuari
+          const nomUsuari = response.data.nom_usuari
+          const admin = response.data.admin
 
           // Guardar el token en LocalStorage
           localStorage.setItem('authToken', token)
           alert(`Benvingut/da: ${response.data.message}`)
 
+          // Guardar el nom en LocalStorage
+          localStorage.setItem('nom_usuari', nomUsuari)
+
+          // Guardar l'id en LocalStorage
+          localStorage.setItem('user_id', idUsuari)
+
+          // Guardar l'estat d'admin al localStorage
+          localStorage.setItem('admin', admin)
+
           // Netegem els camps del formulari
           this.email = ''
           this.password = ''
 
-          // Recarregar la pàgina
-          location.reload()
+          // Redirigim a la part restringida de la web
+          window.location = '/DashboardPage'
         }
       } catch (error) {
         const errorMessage = error.response?.data?.error || error.message
@@ -94,4 +106,3 @@ export default {
 
 <style scoped>
 </style>
-

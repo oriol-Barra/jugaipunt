@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 # Vista simple para la página de bienvenida
 def welcome_view(request):
@@ -25,5 +25,5 @@ def welcome_view(request):
 urlpatterns = [
     path('admin/', admin.site.urls),  # Ruta para el admin
     path('', welcome_view, name='welcome'),  # Ruta para la página de bienvenida
-    path('api/jugador/', include('jugaipunt.urls')),  # Incluye las URLs de tu app jugador
+    path('api/', include('jugaipunt.urls')),  # Incluye las URLs de tu app jugador
 ]
