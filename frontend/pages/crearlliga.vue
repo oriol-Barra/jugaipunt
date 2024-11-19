@@ -4,8 +4,8 @@
       <h1 class="text-3xl font-bold mb-8 text-center">
         Registre de Lliga o Torneig
       </h1>
+      <!-- Cambiado a enviarDades -->
       <form id="formulariTorneig" @submit.prevent="enviarDades">
-        <!-- Cambiado a enviarDades -->
         <div class="mb-4">
           <label class="block text-gray-700" for="nomLliga">Nom de la Lliga</label>
           <input

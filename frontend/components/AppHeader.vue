@@ -108,6 +108,7 @@
 
 <script>
 import axios from 'axios'
+import { useRuntimeConfig } from '#app'
 
 export default {
   name: 'AppHeader',
@@ -132,7 +133,6 @@ export default {
     checkIsAdmin () {
       // Comprovar si l'usari és admin
       // this.isAdmin = false // TO DO -- obtenir dades de l'endpoint
-      // const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
       try {
         if (localStorage.getItem('admin') === 'true') {
           this.isAdmin = true
@@ -146,7 +146,9 @@ export default {
     async logout () {
       try {
         const token = localStorage.getItem('authToken') // Obtenir el token del localStorage
-        const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
+
+        const config = useRuntimeConfig()
+        const baseURL = config.public.apiBaseUrl
 
         // Enviar el token en el cos de la sol·licitud
         await axios.post(`${baseURL}/api/logout`, { token })

@@ -34,26 +34,13 @@
           Iniciar Sessió
         </button>
       </form>
-      <div class="flex flex-col space-y-4">
-        <button
-          class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 w-full"
-          @click="loginWithGoogle"
-        >
-          Iniciar Sessió amb Google
-        </button>
-        <button
-          class="bg-blue-800 text-white py-2 px-4 rounded hover:bg-blue-900 w-full"
-          @click="loginWithFacebook"
-        >
-          Iniciar Sessió amb Facebook
-        </button>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios' // Importa Axios per a realizar sol·licituds
+import { useRuntimeConfig } from '#app'
 
 export default {
   data () {
@@ -65,7 +52,9 @@ export default {
   methods: {
     async submit () {
       try {
-        const response = await axios.post('http://localhost:8000/api/login', {
+        const config = useRuntimeConfig()
+        const baseURL = config.public.apiBaseUrl
+        const response = await axios.post(`${baseURL}/api/login`, {
           email: this.email,
           contrasenya: this.password
         })

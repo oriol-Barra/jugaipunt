@@ -14,6 +14,7 @@
     "lintfix": "npm run lint:js -- --fix"
   },
   "dependencies": {
+    "@iconify-json/heroicons": "^1.2.1",
     "@nuxt/ui": "^2.19.2",
     "axios": "^1.7.7",
     "nuxt": "^3.13.0",

@@ -65,6 +65,7 @@
 
 <script>
 import axios from 'axios'
+import { useRuntimeConfig } from '#app'
 
 export default {
   data () {
@@ -97,7 +98,8 @@ export default {
       }
 
       try {
-        const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
+        const config = useRuntimeConfig()
+        const baseURL = config.public.apiBaseUrl
         const response = await axios.get(`${baseURL}/api/jugador/buscar`, {
           params: { nom: this.nomJugador } // envia el nom com a paràmetre
         })
@@ -127,7 +129,8 @@ export default {
       }
 
       try {
-        const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
+        const config = useRuntimeConfig()
+        const baseURL = config.public.apiBaseUrl
 
         // Extrae solo los IDs de los jugadores para enviar al backend
         const llistaJugadorsIDs = this.jugadorsAfegits.map(jugador => ({ id: jugador.id }))

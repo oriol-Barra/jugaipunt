@@ -1,4 +1,4 @@
-# jugaipunt
+# jugaripunt
 
 Projecte final Desenvolupament Aplicacions Web (IOC)
 

@@ -108,12 +108,7 @@
           class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 w-full mb-4"
           type="submit"
         >
-          <button
-            class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 w-full mb-4"
-            type="submit"
-          >
-            Registre d'usuari
-          </button>
+          Registre d'usuari
         </button>
       </form>
     </div>
@@ -122,6 +117,7 @@
 
 <script>
 import axios from 'axios' // Importa Axios per a realizar sol·licituds
+import { useRuntimeConfig } from '#app'
 
 export default {
   data () {
@@ -145,7 +141,8 @@ export default {
       }
 
       try {
-        const baseURL = process.env.API_BASE_URL || 'http://localhost:8000'
+        const config = useRuntimeConfig()
+        const baseURL = config.public.apiBaseUrl
         const response = await axios.post(`${baseURL}/api/jugador`, {
           email: this.email,
           contrasenya: this.password, // Solo se envía la contraseña

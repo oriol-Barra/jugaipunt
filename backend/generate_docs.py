@@ -10,7 +10,6 @@ setup()
 import pdoc
 
 # Genera la documentación para el módulo especificado
-pdoc.pdoc('jugaipunt', output_dir='docs', html=True)
+pdoc.pdoc('jugaripunt', output_dir='docs', html=True)
 
 print("Documentación generada en la carpeta 'docs'.")
-
