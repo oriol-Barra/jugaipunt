@@ -8,24 +8,17 @@
         <!-- Seccio d'introduccio -->
         <form @submit.prevent="submit">
           <div class="mb-4">
-            <label class="block text-gray-700" for="partides">Buscar Lliga</label>
+            <label class="block text-gray-700" for="partides">Sel·lecciona la lliga</label>
 
-            <UFormGroup name="select_partides" label="Partides">
-              <USelect v-model="partida_escollida" placeholder="Select..." :options="partides" @change="onSelectPartida" />
-            </UFormGroup>
-          </div>
-          <div class="mb-4">
-            <label class="block text-gray-700" for="guanyador">Selecciona el Guanyador</label>
-
-            <UFormGroup name="escull_jugador" label="Guanyador">
-              <USelect v-model="jugador_guanyador" placeholder="Select..." :options="jugadors" />
+            <UFormGroup name="select_lligues" label="Lligues">
+              <USelect v-model="lliga_escollida" placeholder="Select..." :options="lligues"/>
             </UFormGroup>
           </div>
 
           <button
             class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 w-full mb-4"
             type="submit"
-            @click="enviarResultats"
+            @click="descarregarResultats"
           >
             Descarregar
           </button>
@@ -46,74 +39,51 @@ export default {
     // var partides = []
     //
     return {
+      lliga_escollida: undefined,
       partida_escollida: undefined,
       jugador_guanyador: undefined,
+      lligues: [],
       partides: [],
       jugadors: []
     }
   },
   mounted () {
-    // busquem partides
-    this.buscarPartides()
-    // busquem jugadors partida
+    // busquem lligues
+    this.buscarLligues()
   },
   methods: {
-    /** Busquem les partides disponibles i les afegim al llistat */
-    async buscarPartides () {
+    /** Busquem les lligues disponibles i les afoegim al llistat */
+    async buscarLligues () {
       try {
         const config = useRuntimeConfig()
         const baseURL = config.public.apiBaseUrl
-        const response = await axios.get(`${baseURL}/api/partides`, {
+        const response = await axios.get(`${baseURL}/api/lligues`, {
         })
 
         for (let i = 0; i < response.data.length; i++) {
-          console.log(response.data)
-          const nomPartida = 'Partida ' + response.data[i].jugador1 + ' contra ' + response.data[i].jugador2
-          this.partides.push({ label: nomPartida, value: response.data[i].partida_pk })
+          const nomLliga = 'Lliga ' + response.data[i].nom_lliga
+          this.lligues.push({ label: nomLliga, value: response.data[i].lliga_pk })
         }
       } catch (error) {
         console.error('Error en la cerca:', error)
       }
     },
-    /** En funció de la partida escollida, mostrem les opcions de resultats */
-    async onSelectPartida () {
-      try {
-        const config = useRuntimeConfig()
-        const baseURL = config.public.apiBaseUrl
-        const response = await axios.get(`${baseURL}/api/partides`, {
-        })
-        for (let i = 0; i < response.data.length; i++) {
-          // eslint-disable-next-line eqeqeq
-          if (this.partida_escollida == response.data[i].partida_pk) {
-            this.jugadors = [
-              { label: response.data[i].jugador1, value: 'jugador1' },
-              { label: response.data[i].jugador2, value: 'jugador2' },
-              { label: 'Empat', value: 'EMP' }
-            ]
-          }
-        }
-      } catch (error) {
-        console.error('Error en la cerca:', error)
-      }
-    },
-    async enviarResultats () {
+    async descarregarResultats () {
       try {
         const config = useRuntimeConfig()
         const baseURL = config.public.apiBaseUrl
 
         // enviar les dades per a afegir resultats
-        const response = await axios.post(`${baseURL}/api/registreresultat`, {
-          partida_pk: this.partida_escollida,
-          guanyador: this.jugador_guanyador
+        const response = await axios.post(`${baseURL}/api/exportarResultats`, {
+          lliga_pk: this.lliga_escollida,
+          //partida_pk: this.partida_escollida,
+          //guanyador: this.jugador_guanyador
         })
 
-        if (response.status === 201) {
-          alert('Resultat registrat correctament!')
-        }
 
         // neteja dades
-        this.partida_escollida = ''
-        this.jugador_guanyador = ''
+        this.lliga_escollida = ''
+        //this.jugador_guanyador = ''
       } catch (error) {
         console.error('Error al enviar resultats:', error)
       }
