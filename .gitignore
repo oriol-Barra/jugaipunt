@@ -10,6 +10,7 @@
 **/__pycache__
 **/*.py[cod]
 **/static
+**/src/settings.py
 
 # Environment variables
 **/.env
