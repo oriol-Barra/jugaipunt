@@ -78,6 +78,12 @@
                     Resultats partides
                   </button>
                 </nuxt-link>
+                <!--Button descarregar resultats lliga-->
+                <nuxt-link to="/DescarregarResultats">
+                  <button class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700">
+                    Descarregar resultats
+                  </button>
+                </nuxt-link>
                 <button
                   class="w-full bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700"
                   @click="logout"
