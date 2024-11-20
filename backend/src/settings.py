@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-&kw3z$h2)dvrg58)d^9vwin0n@%bn%b*ptlnjn6n2@)km!t1$v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # Application definition
 INSTALLED_APPS = [
@@ -75,14 +75,11 @@ WSGI_APPLICATION = 'src.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'jugaripunt',
-        'USER': 'jugaripunt',
-        'PASSWORD': '',
-        'HOST': '/var/run/postgresql',
-        'PORT': '',
-        'OPTIONS': {
-            'options': '-c search_path=public'
-        }
+        'NAME': 'jugaipunt',
+        'USER': 'grup2',
+        'PASSWORD': 'grup2',
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
