@@ -227,6 +227,23 @@ def getPartides(request):
     return JsonResponse(llista_partides, safe=False)
 
 @csrf_exempt
+def getLligues(request):
+    """Funció per a retornar el llistat de lligues"""
+
+    lligues = Lliga.objects.all()
+
+    llista_lligues = []
+
+    for lliga in lligues: 
+        llista_lligues.append({
+            'lliga_pk': lliga.pk,
+            'nom_lliga': lliga.nomLliga,
+
+        })
+
+    return JsonResponse(llista_lligues, safe=False)
+
+@csrf_exempt
 def registrarResultatPartida(request):
     """Funció per a registrar els resultats de les partides"""
 
@@ -282,3 +299,54 @@ def buscar_jugador(request):
 #@csrf_exempt
 #def afegir_resultats(request):
 #funció per a afegir els resultats de les partides. Data, usuari guanyador i perdedor.
+
+@csrf_exempt 
+def exportar_resultats(request, id_lliga):
+    """
+    Funció per a exportar els resultats d'una lliga
+    """
+
+    lliga = Lliga.objects.get(pk = id_lliga)
+
+    """"
+    response = HttpResponse(content_type='application/zip')
+    zf = zipfile.ZipFile(response, 'w')
+
+    # Add data to zip file 
+    ZIPFILE_NAME = 'gironat_questionnaire.zip'
+    README_NAME = 'README.md'
+    README_CONTENT = 'This zip file contains all the answered questions from Gironat quetionnaire. This data has been downloaded at ' + str(datetime.now())
+
+    zf.writestr(README_NAME, README_CONTENT)
+
+    # create file for choice, text and numeric answers 
+    
+    data = utils.obtain_responses()
+    
+    s = io.StringIO()
+    csv.writer(s).writerows(data)
+    s.seek(0)
+
+    zf.writestr("data.csv", s.getvalue())
+
+    # create file for point answers
+    point_data = utils.obtain_point_responses()
+    p = io.StringIO()
+    csv.writer(p).writerows(point_data)
+    p.seek(0)
+
+    zf.writestr('points.csv', p.getvalue())
+
+    # create file for place answers 
+    place_data = utils.obtain_place_responses()  
+
+    pl = io.StringIO()
+    csv.writer(pl).writerows(place_data)
+    pl.seek(0)
+
+    zf.writestr('places.csv', pl.getvalue())
+    
+    response['Content-Disposition'] = f'attachment; filename={ZIPFILE_NAME}'
+    return response
+    """
+    return False 
