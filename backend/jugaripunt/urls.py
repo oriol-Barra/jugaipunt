@@ -11,4 +11,5 @@ urlpatterns = [
     path('registreresultat', views.registrarResultatPartida, name='registreresultat/'), # Ruta per a registrar resultats
     path('jugador/buscar', views.buscar_jugador, name='buscar_jugador'),
     path('lligues', views.getLligues, name="getLligues"),
+    path('exportarResultats', views.exportar_resultats, name="exportarResultats"),
 ]
