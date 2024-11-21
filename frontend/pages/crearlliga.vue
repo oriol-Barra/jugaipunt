@@ -101,16 +101,21 @@ export default {
         document.getElementById('formulariTorneig').reset()
 
         // Navegar a la pàgina Afegeix Jugador amb els paràmetres a la URL
-        this.$router.push({
-          path: '/afegeixjugadors',
-          query: {
-            numJugadors: this.numJugadors,
-            nomLliga: this.nomLliga,
-            dataInici: this.dataInici,
-            dataFi: this.dataFi,
-            tipusTorneig: this.tipusTorneig
-          }
-        })
+        if (this.numJugadors % 4 !== 0 && this.tipusTorneig === 'TorneigEliminatori') {
+          alert('per als tornejos eliminatoris calen un mínim de 4 jugadors, i sempre han de ser múltiples de 4')
+        } else {
+          this.$router.push({
+            path: '/afegeixjugadors',
+            query: {
+              numJugadors: this.numJugadors,
+              nomLliga: this.nomLliga,
+              dataInici: this.dataInici,
+              dataFi: this.dataFi,
+              tipusTorneig: this.tipusTorneig
+
+            }
+          })
+        }
       } catch (error) {
         alert(`Error de registre: ${error.response?.data.error || error.message}`)
       }

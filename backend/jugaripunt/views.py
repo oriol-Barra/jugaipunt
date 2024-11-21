@@ -1,3 +1,4 @@
+import random
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import JsonResponse
@@ -147,6 +148,25 @@ def crear_torneig(request):
                         jugador1=jugadors[i],
                         jugador2=jugadors[j]
                     )
+                      # Generar las partidas si el tipo de torneo es "eliminatoria"
+        elif tipusTorneig == "TorneigEliminatori":
+            ronda = 1
+            while len(jugadors) > 3:
+                # Mezclar los jugadores aleatoriamente
+                random.shuffle(jugadors)
+
+                nueva_ronda = []
+                for i in range(0, len(jugadors), 2):
+                    partida = Partida.objects.create(
+                        lliga=lliga,
+                        jugador1=jugadors[i],
+                        jugador2=jugadors[i + 1]
+                    )
+                    nueva_ronda.append(partida)
+
+                # Simular los ganadores ficticios (para actualizar después)
+                jugadors = ["Ganador_Ronda_{}_{}".format(ronda, idx) for idx in range(len(nueva_ronda))]
+                ronda += 1
 
         return JsonResponse({"message": "Lliga creada amb èxit i partides generades!"}, status=201)
 

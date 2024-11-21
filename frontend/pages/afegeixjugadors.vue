@@ -110,16 +110,21 @@ export default {
       }
     },
     seleccionarJugador (jugador) {
-      // selecciona el jugador fent click damunt
+      // Selecciona el jugador fent clic damunt
       this.jugadorSeleccionat = jugador
-      // Afegir el jugador seleccionat a la llista local de jugadors afegits
-      this.jugadorsAfegits.push(this.jugadorSeleccionat)
+
+      // Comprovar si el jugador ja està a la llista de jugadors afegits
+      const jaAfegit = this.jugadorsAfegits.some(j => j.id === jugador.id)
+
+      if (jaAfegit) {
+        alert('Aquest jugador ja forma part de la lliga')
+      } else {
+        // Afegir el jugador seleccionat a la llista
+        this.jugadorsAfegits.push(this.jugadorSeleccionat)
+      }
       // si la llista de jugadors és igual al número de jugadors que ha de tenir la lliga enviem alert indicant que tot està correcte.
       if (this.jugadorsAfegits.length === parseInt(this.numJugadors)) {
         alert("tots els jugadors ja han sigut registrats, si desitjes donar d'alta la lliga prem el botó")
-      // Si encara falten jugadors avisem
-      } else {
-        alert('encara no has afegit a tots els jugadors')
       }
     },
     async afegirLliga () {
