@@ -239,6 +239,7 @@ def getPartides(request):
 
     for partida in partides:
         llista_partides.append({
+            'lliga':partida.lliga.nomLliga,
             'partida_pk': partida.pk,
             'jugador1': partida.jugador1.nom,
             'jugador1_pk': partida.jugador1.pk,

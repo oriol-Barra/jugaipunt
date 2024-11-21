@@ -9,6 +9,14 @@
         <form @submit.prevent="submit">
           <div class="mb-4">
             <label class="block text-gray-700" for="partides">Buscar Partida</label>
+            <!-- Nou camp per a seleccionar la lliga -->
+            <div class="mb-4">
+              <label class="block text-gray-700" for="liga">Selecciona la Liga</label>
+
+              <UFormGroup name="escull_liga" label="Lliga">
+                <USelect v-model="lliga_seleccionada" placeholder="Select..." :options="lligues" @change="buscarPartides" />
+              </UFormGroup>
+            </div>
 
             <UFormGroup name="select_partides" label="Partides">
               <USelect v-model="partida_escollida" placeholder="Select..." :options="partides" @change="onSelectPartida" />
@@ -43,21 +51,32 @@ export default {
   name: 'ResultatsPartides',
 
   data () {
-    // var partides = []
-    //
     return {
       partida_escollida: undefined,
       jugador_guanyador: undefined,
+      lliga_seleccionada: undefined, // Nueva propiedad para la liga
       partides: [],
-      jugadors: []
+      jugadors: [],
+      lligues: [] // Lista de ligas
     }
   },
   mounted () {
-    // busquem partides
-    this.buscarPartides()
-    // busquem jugadors partida
+    this.buscarLligues() // Llamar a la función para buscar las ligas
   },
   methods: {
+    /** Busquem les lligues disponibles i les afegim al llistat */
+    async buscarLligues () {
+      try {
+        const config = useRuntimeConfig()
+        const baseURL = config.public.apiBaseUrl
+        const response = await axios.get(`${baseURL}/api/lligues`) // Ajusta la URL si es necesario
+        for (let i = 0; i < response.data.length; i++) {
+          this.lligues.push({ label: response.data[i].nom_lliga, value: response.data[i].nom_lliga })
+        }
+      } catch (error) {
+        console.error('Error en la cerca de ligas:', error)
+      }
+    },
     /** Busquem les partides disponibles i les afegim al llistat */
     async buscarPartides () {
       try {
@@ -65,16 +84,21 @@ export default {
         const baseURL = config.public.apiBaseUrl
         const response = await axios.get(`${baseURL}/api/partides`, {
         })
+        console.log(response)
+        console.log(this.lliga_seleccionada)
 
         for (let i = 0; i < response.data.length; i++) {
-          console.log(response.data)
           const nomPartida = 'Partida ' + response.data[i].jugador1 + ' contra ' + response.data[i].jugador2
-          this.partides.push({ label: nomPartida, value: response.data[i].partida_pk })
+          // eslint-disable-next-line eqeqeq
+          if (response.data[i].lliga == this.lliga_seleccionada) {
+            this.partides.push({ label: nomPartida, value: response.data[i].partida_pk })
+          }
         }
       } catch (error) {
         console.error('Error en la cerca:', error)
       }
     },
+
     /** En funció de la partida escollida, mostrem les opcions de resultats */
     async onSelectPartida () {
       try {
@@ -96,15 +120,17 @@ export default {
         console.error('Error en la cerca:', error)
       }
     },
+
+    /** Enviem els resultats, incloent la liga seleccionada */
     async enviarResultats () {
       try {
         const config = useRuntimeConfig()
         const baseURL = config.public.apiBaseUrl
 
-        // enviar les dades per a afegir resultats
         const response = await axios.post(`${baseURL}/api/registreresultat`, {
           partida_pk: this.partida_escollida,
-          guanyador: this.jugador_guanyador
+          guanyador: this.jugador_guanyador,
+          liga_pk: this.liga_seleccionada // Enviar la liga seleccionada
         })
 
         if (response.status === 201) {
@@ -114,6 +140,7 @@ export default {
         // neteja dades
         this.partida_escollida = ''
         this.jugador_guanyador = ''
+        this.liga_seleccionada = '' // Limpiar la liga seleccionada
       } catch (error) {
         console.error('Error al enviar resultats:', error)
       }
