@@ -1,10 +1,12 @@
 import random
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.hashers import make_password, check_password
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.crypto import get_random_string
 import json
+import zipfile 
+import csv, io
 from .models import Jugador, Lliga, Partida
 
 @csrf_exempt
@@ -321,52 +323,59 @@ def buscar_jugador(request):
 #funció per a afegir els resultats de les partides. Data, usuari guanyador i perdedor.
 
 @csrf_exempt 
-def exportar_resultats(request, id_lliga):
+def exportar_resultats(request):
     """
     Funció per a exportar els resultats d'una lliga
     """
 
-    lliga = Lliga.objects.get(pk = id_lliga)
+    print('entrem a la funció')
+    # Cargar los datos JSON del cuerpo de la solicitud
+    try:
 
-    """"
-    response = HttpResponse(content_type='application/zip')
-    zf = zipfile.ZipFile(response, 'w')
+        # Obtenim id 
+        lliga_id = request.GET.get('lliga_id')
+        print('id lliga')
+        print(lliga_id)
 
-    # Add data to zip file 
-    ZIPFILE_NAME = 'gironat_questionnaire.zip'
-    README_NAME = 'README.md'
-    README_CONTENT = 'This zip file contains all the answered questions from Gironat quetionnaire. This data has been downloaded at ' + str(datetime.now())
+        lliga = Lliga.objects.filter(pk = lliga_id)[0]
 
-    zf.writestr(README_NAME, README_CONTENT)
+        # Preparar csv per descarregar 
+        response = HttpResponse(content_type='application/zip')
+        zf = zipfile.ZipFile(response, 'w')
 
-    # create file for choice, text and numeric answers 
-    
-    data = utils.obtain_responses()
-    
-    s = io.StringIO()
-    csv.writer(s).writerows(data)
-    s.seek(0)
+        # Add data to zip file 
+        ZIPFILE_NAME = 'resultats_jugaripunt.zip'
+        README_NAME = 'README.md'
+        README_CONTENT = "Aquest zip conté les dades de la lliga. Trobareu un fitxer .csv amb el nom de la lliga, la data d'inici, data de fi, i els diferents emparellaments, amb el número de federat de cada jugador i el resultat."
 
-    zf.writestr("data.csv", s.getvalue())
+        zf.writestr(README_NAME, README_CONTENT)
 
-    # create file for point answers
-    point_data = utils.obtain_point_responses()
-    p = io.StringIO()
-    csv.writer(p).writerows(point_data)
-    p.seek(0)
+        # crar l'arxiu 
 
-    zf.writestr('points.csv', p.getvalue())
+        data = []
+        # info lliga
+        data.append(['Nom Lliga', str(lliga.nomLliga)])
+        data.append(['Data Inici', str(lliga.dataInici)])
+        data.append(['Data Fi', str(lliga.dataFi)])
 
-    # create file for place answers 
-    place_data = utils.obtain_place_responses()  
+        # partides 
+        for partida in Partida.objects.filter(lliga = lliga_id):
+            data.append([
+                str(partida.jugador1.nom) + '-' +str(partida.jugador1.num_federat), 
+                str(partida.jugador2.nom) + '-' + str(partida.jugador2.num_federat), 
+                partida.resultat
+                
+                ])
 
-    pl = io.StringIO()
-    csv.writer(pl).writerows(place_data)
-    pl.seek(0)
+        s = io.StringIO()
+        csv.writer(s).writerows(data)
+        zf.writestr("resultats.csv", s.getvalue())
+        s.seek(0)
 
-    zf.writestr('places.csv', pl.getvalue())
-    
-    response['Content-Disposition'] = f'attachment; filename={ZIPFILE_NAME}'
-    return response
-    """
-    return False 
+        response['Content-Disposition'] = f'attachment; filename={ZIPFILE_NAME}'
+        print('resposta')
+        return response
+
+
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON data"}, status=400)
