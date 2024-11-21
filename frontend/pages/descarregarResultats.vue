@@ -73,27 +73,30 @@ export default {
         const config = useRuntimeConfig()
         const baseURL = config.public.apiBaseUrl
 
-        // enviar les dades per a afegir resultats
-        const response = await axios.post(`${baseURL}/api/exportarResultats`, {
-          id_lliga: this.lliga_escollida
-        })
+        const method = 'GET';
+        const url = `${baseURL}/api/exportarResultats`;
 
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'download.zip'); // File name
-        document.body.appendChild(link);
-        link.click();
-
-        // Clean up
-        link.parentNode.removeChild(link);
-
-
-        // neteja dades
-        this.lliga_escollida = ''
-      } catch (error) {
+        axios
+          .request({
+            url,
+            method,
+            responseType: 'blob', //important
+            params: {
+              lliga_id: this.lliga_escollida,
+            }
+          })
+          .then(({ data }) => {
+            const downloadUrl = window.URL.createObjectURL(new Blob([data]));
+            const link = document.createElement('a');
+            link.href = downloadUrl;
+            link.setAttribute('download', 'file.zip'); //any other extension
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+          });
+        } catch (error) {
         console.error('Error al enviar resultats:', error)
-      }
+        }
     }
   }
 }
