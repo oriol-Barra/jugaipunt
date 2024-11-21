@@ -11,7 +11,7 @@
             <label class="block text-gray-700" for="partides">Sel·lecciona la lliga</label>
 
             <UFormGroup name="select_lligues" label="Lligues">
-              <USelect v-model="lliga_escollida" placeholder="Select..." :options="lligues"/>
+              <USelect v-model="lliga_escollida" placeholder="Select..." :options="lligues" />
             </UFormGroup>
           </div>
 
@@ -75,15 +75,22 @@ export default {
 
         // enviar les dades per a afegir resultats
         const response = await axios.post(`${baseURL}/api/exportarResultats`, {
-          lliga_pk: this.lliga_escollida,
-          //partida_pk: this.partida_escollida,
-          //guanyador: this.jugador_guanyador
+          id_lliga: this.lliga_escollida
         })
+
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'download.zip'); // File name
+        document.body.appendChild(link);
+        link.click();
+
+        // Clean up
+        link.parentNode.removeChild(link);
 
 
         // neteja dades
         this.lliga_escollida = ''
-        //this.jugador_guanyador = ''
       } catch (error) {
         console.error('Error al enviar resultats:', error)
       }
