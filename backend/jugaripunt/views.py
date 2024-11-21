@@ -1,9 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.hashers import make_password, check_password
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.crypto import get_random_string
 import json
+import zipfile 
+import csv, io
 from .models import Jugador, Lliga, Partida
 
 @csrf_exempt
@@ -301,12 +303,49 @@ def buscar_jugador(request):
 #funció per a afegir els resultats de les partides. Data, usuari guanyador i perdedor.
 
 @csrf_exempt 
-def exportar_resultats(request, id_lliga):
+def exportar_resultats(request):
     """
     Funció per a exportar els resultats d'una lliga
     """
 
-    lliga = Lliga.objects.get(pk = id_lliga)
+    print('entrem a la funció')
+    # Cargar los datos JSON del cuerpo de la solicitud
+    try:
+
+        # Obtenim id 
+        lliga_id = request.GET.get('lliga_id')
+        print('id lliga')
+        print(lliga_id)
+
+       
+        # Preparar csv per descarregar 
+        response = HttpResponse(content_type='application/zip')
+        zf = zipfile.ZipFile(response, 'w')
+
+        # Add data to zip file 
+        ZIPFILE_NAME = 'resultats_jugaripunt.zip'
+        README_NAME = 'README.md'
+        README_CONTENT = 'Aquest zip conté les dades de la lliga '
+
+        zf.writestr(README_NAME, README_CONTENT)
+
+        # crar l'arxiu 
+        #data = lliga.nomLliga 
+
+        #s = io.StringIO()
+        #csv.writer(s).writerows()
+        #s.seek(0)
+        #zf.writestr("resultats.csv", s.getvalue())
+
+        response['Content-Disposition'] = f'attachment; filename={ZIPFILE_NAME}'
+        print('resposta')
+        return response
+
+
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON data"}, status=400)
+
+    
 
     """"
     response = HttpResponse(content_type='application/zip')
@@ -349,4 +388,7 @@ def exportar_resultats(request, id_lliga):
     response['Content-Disposition'] = f'attachment; filename={ZIPFILE_NAME}'
     return response
     """
-    return False 
+
+    # Devolvemos los datos en formato JSON
+    return JsonResponse('dades exportades', safe=False)
+    
