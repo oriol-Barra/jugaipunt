@@ -1,9 +1,9 @@
 import random
-from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.hashers import make_password, check_password
-from django.http import JsonResponse, HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.crypto import get_random_string
+from django.shortcuts import render, get_object_or_404 # type: ignore
+from django.contrib.auth.hashers import make_password, check_password # type: ignore
+from django.http import JsonResponse, HttpResponse # type: ignore
+from django.views.decorators.csrf import csrf_exempt # type: ignore
+from django.utils.crypto import get_random_string # type: ignore
 import json
 import zipfile 
 import csv, io

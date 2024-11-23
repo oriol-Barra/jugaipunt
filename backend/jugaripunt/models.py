@@ -1,5 +1,5 @@
-from django.contrib.auth.models import User  # Si estás utilizant el model d'usuari de Django
-from django.db import models
+from django.contrib.auth.models import User # type: ignore
+from django.db import models # type: ignore
 
 # Model que representa un jugador
 class Jugador(models.Model):
