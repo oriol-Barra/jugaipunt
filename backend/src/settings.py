@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -19,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&kw3z$h2)dvrg58)d^9vwin0n@%bn%b*ptlnjn6n2@)km!t1$v'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-&kw3z$h2)dvrg58)d^9vwin0n@%bn%b*ptlnjn6n2@)km!t1$v')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -75,11 +76,14 @@ WSGI_APPLICATION = 'src.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'jugaipunt',
-        'USER': 'grup2',
-        'PASSWORD': 'grup2',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv('POSTGRES_DB', 'jugaripunt'),
+        'USER': os.getenv('POSTGRES_USER', 'jugaripunt'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
+        'HOST': os.getenv('POSTGRES_HOST', '/var/run/postgresql'),
+        'PORT': os.getenv('POSTGRES_PORT', ''),
+        'OPTIONS': {
+            'options': '-c search_path=public'
+        }
     }
 }
 
@@ -105,11 +109,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'Europe/Madrid'
-
 USE_I18N = True
-
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
@@ -123,13 +124,11 @@ STATIC_ROOT = BASE_DIR / 'static'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # port del frontendpip install django
-]
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = False
 
 ALLOWED_HOSTS = ['*']
 
 CRFS_TRUSTED_ORIGINS = ['*']
 
-APPEND_SLASH = False
+APPEND_SLASH = True
