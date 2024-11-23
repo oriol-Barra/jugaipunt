@@ -82,15 +82,19 @@ export default {
       try {
         const config = useRuntimeConfig()
         const baseURL = config.public.apiBaseUrl
-        const response = await axios.get(`${baseURL}/api/partides`, {
-        })
+        const response = await axios.get(`${baseURL}/api/partides`)
+
         console.log(response)
         console.log(this.lliga_seleccionada)
 
+        // Vacía las partidas antes de comenzar
+        this.partides = []
+
+        // Itera y filtra las partidas que coincidan con la liga seleccionada
         for (let i = 0; i < response.data.length; i++) {
-          const nomPartida = 'Partida ' + response.data[i].jugador1 + ' contra ' + response.data[i].jugador2
           // eslint-disable-next-line eqeqeq
           if (response.data[i].lliga == this.lliga_seleccionada) {
+            const nomPartida = `Partida ${response.data[i].jugador1} contra ${response.data[i].jugador2}`
             this.partides.push({ label: nomPartida, value: response.data[i].partida_pk })
           }
         }
