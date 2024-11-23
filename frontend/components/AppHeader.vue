@@ -38,7 +38,7 @@
                   <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
                     Opcions de la plataforma
                   </h3>
-                  <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1" @click="menuIsOpen = false" />
+                  <UButton color="gray" variant="ghost" name="i-heroicons-x-mark-20-solid" class="-my-1" @click="menuIsOpen = false" />
                 </div>
               </template>
 
