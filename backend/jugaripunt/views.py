@@ -286,6 +286,7 @@ def getPartides(request):
             'jugador1_pk': partida.jugador1.pk,
             'jugador2': partida.jugador2.nom,
             'jugador2_pk': partida.jugador2.pk,
+            'resultat' : partida.resultat,
         })
 
     return JsonResponse(llista_partides, safe=False)
@@ -341,20 +342,20 @@ def registrarResultatPartida(request):
 
 @csrf_exempt
 def buscar_jugador(request):
-    # Obtener el parámetro 'nom' de la query string
+    # Obtenir el paràmetre 'nom' de la query string
     nom = request.GET.get('nom', '')
 
     if nom:
-        # Filtramos los jugadores cuyo nombre contiene el valor de 'nom'
-        jugadores = Jugador.objects.filter(nom__icontains=nom)
+        # Filtrem els jugadors coincidents amb valor de 'nom'
+        jugadors = Jugador.objects.filter(nom__icontains=nom)
     else:
-        jugadores = Jugador.objects.none()
+        jugadors = Jugador.objects.none()
 
-    # Creamos una lista de diccionarios con los datos que queremos devolver
-    jugadores_data = list(jugadores.values('id', 'nom', 'cognoms'))  # Puedes agregar más campos si lo deseas
+    # Creem una llista amb les dades que volem retornar
+    jugadors_data = list(jugadors.values('id', 'nom', 'cognoms'))  # Puedes agregar más campos si lo deseas
 
     # Devolvemos los datos en formato JSON
-    return JsonResponse(jugadores_data, safe=False)
+    return JsonResponse(jugadors_data, safe=False)
 
 #@csrf_exempt
 #def getUser_view(request):
