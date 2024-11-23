@@ -201,7 +201,8 @@ def getUser_view(request, jugador_id):
         # Solo devolvemos el nombre de la liga
         lligues_data.append({
             'lliga_id': lliga.id,
-            'nomLliga': lliga.nomLliga
+            'nomLliga': lliga.nomLliga,
+            'tipus_torneig': lliga.tipusTorneig
         })
 
     # Añadimos la información de las ligas al JSON de respuesta del jugador
