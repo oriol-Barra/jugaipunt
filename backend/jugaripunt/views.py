@@ -70,6 +70,47 @@ def login_view(request):
 
     return JsonResponse({'error': 'Mètode no permès'}, status=405)
 
+#DFA funció per modificar la contrasenya incorpora la recuperacio i la modificacio
+
+@csrf_exempt
+def recuperar_password(request): #funcio per validar les dades informades i trobar el jugador
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        nom = data.get('nom')
+        cognoms = data.get('cognoms')
+        email = data.get('email')
+        edat = data.get('edat')
+
+        try:
+            jugador = Jugador.objects.get(nom=nom, cognoms=cognoms, email=email, edat=edat) #enviem les dades per comprobar si son correctes
+            return JsonResponse({'message': 'Dades correctes.'}, status=200)
+        except Jugador.DoesNotExist:
+            return JsonResponse({'error': 'Algunes dades no són correctes.'}, status=400)#si alguna dada no coincideix
+
+    return JsonResponse({'error': 'Mètode no permès.'}, status=405)
+
+
+@csrf_exempt
+def modificar_password(request): #modifiquem el password
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        nom = data.get('nom')
+        cognoms = data.get('cognoms')
+        email = data.get('email')
+        edat = data.get('edat')
+        nova_contrasenya = data.get('novaContrasenya') #la nova contrasenya
+
+        try:
+            jugador = Jugador.objects.get(nom=nom, cognoms=cognoms, email=email, edat=edat)
+            jugador.contrasenya = make_password(nova_contrasenya)  #asignem la nova contrasenya encriptantla
+            jugador.save()#guardem a jugador
+            return JsonResponse({'message': 'Contrasenya modificada correctament.'}, status=200) #confirmem el canvi
+        except Jugador.DoesNotExist:
+            return JsonResponse({'error': 'Algunes dades no són correctes.'}, status=400)#error si el jugador no existeix
+
+    return JsonResponse({'error': 'Mètode no permès.'}, status=405)
+
+
 @csrf_exempt
 def logout_view(request):
     if request.method == 'POST':
