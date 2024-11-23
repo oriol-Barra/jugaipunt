@@ -14,4 +14,5 @@ urlpatterns = [
     path('jugador/buscar', views.buscar_jugador, name='buscar_jugador'),
     path('lligues', views.getLligues, name="getLligues"),
     path('exportarResultats', views.exportar_resultats, name="exportarResultats"),
+    path('resultatslliga', views.getResultatsLliga, name='getResultatsLliga'), # Ruta per obtenir els resultats d'una lliga
 ]

@@ -148,6 +148,20 @@ export default {
       } catch (error) {
         console.error('Error al enviar resultats:', error)
       }
+    },
+
+    /** Obtenim els resultats per a una lliga específica */
+    async getResultatsLliga () {
+      try {
+        const config = useRuntimeConfig()
+        const baseURL = config.public.apiBaseUrl
+        const response = await axios.get(`${baseURL}/api/resultatslliga`, {
+          params: { lliga_id: this.lliga_seleccionada }
+        })
+        console.log(response.data)
+      } catch (error) {
+        console.error('Error en la cerca de resultats:', error)
+      }
     }
   }
 }

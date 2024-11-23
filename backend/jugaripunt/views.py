@@ -423,3 +423,24 @@ def exportar_resultats(request):
 
     except json.JSONDecodeError:
         return JsonResponse({"error": "Invalid JSON data"}, status=400)
+
+@csrf_exempt
+def getResultatsLliga(request):
+    """Funció per a retornar els resultats d'una lliga específica"""
+
+    if request.method == "GET":
+        lliga_id = request.GET.get('lliga_id')
+        try:
+            lliga = Lliga.objects.get(pk=lliga_id)
+            partides = Partida.objects.filter(lliga=lliga)
+            resultats = []
+            for partida in partides:
+                resultats.append({
+                    'partida_id': partida.pk,
+                    'jugador1': partida.jugador1.nom,
+                    'jugador2': partida.jugador2.nom,
+                    'resultat': partida.get_resultat_display() if partida.resultat else "Pendent"
+                })
+            return JsonResponse(resultats, safe=False)
+        except Lliga.DoesNotExist:
+            return JsonResponse({'error': 'Lliga no trobada.'}, status=404)
