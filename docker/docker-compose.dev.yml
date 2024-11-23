@@ -1,0 +1,73 @@
+---
+services:
+  frontend:
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev.frontend
+    environment:
+      API_BASE_URL: http://backend:8000
+    #  PORT: 80
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: on-failure
+
+  backend:
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev.backend
+    #environment:
+    #  PORT: 8000
+    #  DJANGO_SECRET: ''
+    #  POSTGRES_DB: jugaripunt
+    #  POSTGRES_USER: jugaripunt
+    #  POSTGRES_PASSWORD: ''
+    #  POSTGRES_HOST: /var/run/postgresql
+    #  POSTGRES_PORT: ''
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - postgres_socket:/var/run/postgresql
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: on-failure
+
+  postgres:
+    image: postgres:alpine
+    environment:
+      POSTGRES_DB: jugaripunt
+      POSTGRES_USER: jugaripunt
+      POSTGRES_HOST_AUTH_METHOD: trust
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_READ_SEARCH
+      - FOWNER
+      - SETGID
+      - SETUID
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - postgres_socket:/var/run/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jugaripunt"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: on-failure
+
+volumes:
+  postgres_data:
+  postgres_socket:

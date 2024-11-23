@@ -1,0 +1,15 @@
+# Frontend build
+FROM node:alpine AS builder
+WORKDIR /app
+ENV NUXT_TELEMETRY_DISABLED=1
+COPY ./frontend /app
+RUN npm install
+RUN npm run build
+
+# Busybox httpd
+FROM busybox:musl
+RUN adduser -D jugaripunt
+USER jugaripunt
+WORKDIR /jugaripunt
+COPY --from=builder /app/.output/public /jugaripunt
+CMD [ "sh", "-c", "NUXT_PUBLIC_API_BASE_URL=${API_BASE_URL} busybox httpd -f -v -p ${PORT:-80}" ]
