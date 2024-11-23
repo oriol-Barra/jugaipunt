@@ -47,7 +47,8 @@ export default defineNuxtConfig({
   modules: [// https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module', // https://go.nuxtjs.dev/tailwindcss
     // '@nuxtjs/tailwindcss',
-    '@nuxt/ui'],
+    '@nuxt/ui'
+  ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

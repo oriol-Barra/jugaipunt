@@ -99,11 +99,6 @@ export default {
 </script>
 
 <style scoped>
-.bg-cover {
-  background-image: url('/path/to/your/background-image.jpg'); /* Ruta de la imagen de fondo */
-  background-size: cover;
-  background-position: center;
-}
 .text-left {
   text-align: left;
 }
