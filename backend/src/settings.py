@@ -78,7 +78,7 @@ DATABASES = {
         'NAME': 'jugaipunt',
         'USER': 'grup2',
         'PASSWORD': 'grup2',
-        'HOST': 'localhost',
+        'HOST': 'db',
         'PORT': '5432',
     }
 }
@@ -124,12 +124,6 @@ STATIC_ROOT = BASE_DIR / 'static'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # port del frontendpip install django
+    "http://localhost:8086",  # Aquí pon el puerto donde tu frontend corre
+
 ]
-CORS_ALLOW_CREDENTIALS = False
-
-ALLOWED_HOSTS = ['*']
-
-CRFS_TRUSTED_ORIGINS = ['*']
-
-APPEND_SLASH = False
