@@ -3,7 +3,7 @@
 ## Deploy on Alpine VM
 
 ```sh
-./deploy.sh
+doas ./deploy.sh
 ```
 
 ## Deploy with Docker
