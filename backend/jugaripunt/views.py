@@ -324,18 +324,29 @@ def registrarResultatPartida(request):
         partida_pk = data.get("partida_pk")
         guanyador = data.get("guanyador")
 
-        print(partida_pk)
-        print(guanyador)
+        try:
+            partida = Partida.objects.get(pk=partida_pk)  # Obtenir l'objecte Partida
+        except Partida.DoesNotExist:
+            return JsonResponse({"error": "Partida no trobada"}, status=404)
 
-        partida = Partida.objects.filter(pk=partida_pk)
+        if guanyador == 'jugador1':
+            partida.resultat = 'VJ1'
+            partida.jugador1.puntuacio = 1
+            partida.jugador2.puntuacio = 0
+        elif guanyador == 'jugador2':
+            partida.resultat = 'VJ2'
+            partida.jugador1.puntuacio = 0
+            partida.jugador2.puntuacio = 1
+        elif guanyador == 'EMP':
+            partida.resultat = 'EMP'
+            partida.jugador1.puntuacio = 0.5
+            partida.jugador2.puntuacio = 0.5
+        else:
+            return JsonResponse({"error": "Guanyador no vàlid"}, status=400)
 
-        if(guanyador == 'jugador1'):
-            partida.update(resultat='VJ1')
-        if(guanyador == 'jugador2'):
-            partida.update(resultat='VJ2')
-        if(guanyador == 'EMP'):
-            partida.update(resultat='EMP')
-
+        partida.jugador1.save()
+        partida.jugador2.save()
+        partida.save()
 
         return JsonResponse({"message": "S'ha desat el resultat amb èxit!"}, status=201)
     else:
