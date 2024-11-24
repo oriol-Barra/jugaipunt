@@ -88,7 +88,7 @@ export default {
           this.password = ''
 
           // Redirigim a la part restringida de la web
-          window.location = '/DashboardPage'
+          window.location = '/dashboardPage'
         }
       } catch (error) {
         const errorMessage = error.response?.data?.error || error.message
