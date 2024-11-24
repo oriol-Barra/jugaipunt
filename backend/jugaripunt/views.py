@@ -444,3 +444,17 @@ def getResultatsLliga(request):
             return JsonResponse(resultats, safe=False)
         except Lliga.DoesNotExist:
             return JsonResponse({'error': 'Lliga no trobada.'}, status=404)
+
+@csrf_exempt
+def get_ranking(request):
+    jugadors = Jugador.objects.all().order_by('-puntuacio')
+    ranking = [
+        {
+            'id': jugador.id,
+            'nom': jugador.nom,
+            'cognoms': jugador.cognoms,
+            'puntuacio': jugador.puntuacio
+        }
+        for jugador in jugadors
+    ]
+    return JsonResponse(ranking, safe=False)

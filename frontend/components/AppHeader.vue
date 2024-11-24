@@ -84,6 +84,12 @@
                     Descarregar resultats
                   </button>
                 </nuxt-link>
+                <!-- Afegir botó per a la pàgina de rànquing -->
+                <nuxt-link to="/ranking">
+                  <button class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700">
+                    Rànquing
+                  </button>
+                </nuxt-link>
                 <button
                   class="w-full bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700"
                   @click="logout"
