@@ -5,11 +5,21 @@
 **/build
 **/dist
 **/node_modules
+/frontend/dockerfile
+
 
 # Backend
 **/__pycache__
 **/*.py[cod]
 **/static
+/backend/src/settings.py
+/backend/venv/
+
 
 # Environment variables
+pgdata/
+config/
 **/.env
+#coses del docker
+dockerfile
+docker-compose.yml
