@@ -7,6 +7,8 @@ RUN apk add --no-cache \
   py3-psycopg2 \
   && rm -rf /var/cache/apk/*
 
+RUN adduser -D jugaripunt
+USER jugaripunt
 WORKDIR /jugaripunt
 COPY ./backend /jugaripunt
 RUN python manage.py collectstatic --noinput
