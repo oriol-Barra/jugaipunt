@@ -2,7 +2,7 @@
 import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
-  ssr: true,
+  ssr: false,
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -47,10 +47,13 @@ export default defineNuxtConfig({
   modules: [// https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module', // https://go.nuxtjs.dev/tailwindcss
     // '@nuxtjs/tailwindcss',
-    '@nuxt/ui'],
+    '@nuxt/ui'
+  ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    watch: ['frontend'] // Verifica que los archivos sean observados correctamente
+
   },
 
   // Nitro configuration for static site generation

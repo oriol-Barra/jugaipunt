@@ -83,6 +83,7 @@ export default {
 
     async onLligaClick (lligaNom, tipusTorneig) {
       try {
+        console.log('semenakoooooo')
         const config = useRuntimeConfig()
         const baseURL = config.public.apiBaseUrl
         const response = await axios.get(`${baseURL}/api/partides`)
@@ -99,11 +100,6 @@ export default {
 </script>
 
 <style scoped>
-.bg-cover {
-  background-image: url('/path/to/your/background-image.jpg'); /* Ruta de la imagen de fondo */
-  background-size: cover;
-  background-position: center;
-}
 .text-left {
   text-align: left;
 }

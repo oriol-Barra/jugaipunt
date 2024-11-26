@@ -1,0 +1,22 @@
+# Usamos una imagen base de Node
+FROM node:alpine AS builder
+WORKDIR /app
+
+# Desactivar la telemetría de Nuxt
+ENV NUXT_TELEMETRY_DISABLED=1
+
+# Copiar el archivo package.json y package-lock.json
+COPY ./frontend/package.json ./
+COPY ./frontend/package-lock.json ./
+
+# Instalar dependencias de npm
+RUN npm install
+
+# Copiar el resto del código fuente de frontend
+COPY ./frontend /app
+
+# Exponer el puerto
+EXPOSE 3000
+
+# Iniciar el servidor en modo desarrollo
+CMD ["npm", "run", "dev"]

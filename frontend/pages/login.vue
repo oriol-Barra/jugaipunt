@@ -37,7 +37,7 @@
       <!-- recuperar contrasenya navega a la pagina per introduir les dades -->
       <div class="flex justify-center w-full">
         <NuxtLink to="/recuperarPassword" class="text-black-500 align=center hover:underline">
-        Recuperar contrasenya
+          Recuperar contrasenya
         </NuxtLink>
       </div>
     </div>

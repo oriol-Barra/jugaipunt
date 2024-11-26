@@ -23,4 +23,3 @@ config/
 #coses del docker
 dockerfile
 docker-compose.yml
-

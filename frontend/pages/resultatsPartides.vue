@@ -130,11 +130,9 @@ export default {
       try {
         const config = useRuntimeConfig()
         const baseURL = config.public.apiBaseUrl
-
         const response = await axios.post(`${baseURL}/api/registreresultat`, {
           partida_pk: this.partida_escollida,
-          guanyador: this.jugador_guanyador,
-          liga_pk: this.liga_seleccionada // Enviar la liga seleccionada
+          guanyador: this.jugador_guanyador
         })
 
         if (response.status === 201) {
@@ -147,6 +145,20 @@ export default {
         this.liga_seleccionada = '' // Limpiar la liga seleccionada
       } catch (error) {
         console.error('Error al enviar resultats:', error)
+      }
+    },
+
+    /** Obtenim els resultats per a una lliga específica */
+    async getResultatsLliga () {
+      try {
+        const config = useRuntimeConfig()
+        const baseURL = config.public.apiBaseUrl
+        const response = await axios.get(`${baseURL}/api/resultatslliga`, {
+          params: { lliga_id: this.lliga_seleccionada }
+        })
+        console.log(response.data)
+      } catch (error) {
+        console.error('Error en la cerca de resultats:', error)
       }
     }
   }

@@ -9,7 +9,7 @@
 : ${JUGARIPUNT_OPTS=${JUGARIPUNT_OPTS}}
 : ${JUGARIPUNT_SIGTERM_TIMEOUT:=600}
 
-JUGARIPUNT_PIDDIR="/var/run/jugaripunt"
+JUGARIPUNT_PIDDIR="/run/jugaripunt"
 
 name="Jugar i Punt"
 description="gunicorn daemon for jugaripunt"
@@ -30,7 +30,7 @@ start_stop_daemon_args="--stdout ${JUGARIPUNT_LOGDIR}/debug.log
                         --stderr ${JUGARIPUNT_LOGDIR}/debug.log"
 
 depend() {
-    need net
+    need net postgresql caddy
     use logger dns
     after firewall
 }

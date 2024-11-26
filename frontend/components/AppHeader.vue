@@ -38,7 +38,7 @@
                   <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
                     Opcions de la plataforma
                   </h3>
-                  <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1" @click="menuIsOpen = false" />
+                  <UButton color="gray" variant="ghost" name="i-heroicons-x-mark-20-solid" class="-my-1" @click="menuIsOpen = false" />
                 </div>
               </template>
 
@@ -70,7 +70,7 @@
                   </button>
                 </nuxt-link>
                 <!--Button resultat partides-->
-                <nuxt-link to="/ResultatsPartides">
+                <nuxt-link to="/resultatsPartides">
                   <button v-if="isAdmin" class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700">
                     Resultats partides
                   </button>
@@ -82,6 +82,12 @@
                 <nuxt-link to="/DescarregarResultats">
                   <button class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700">
                     Descarregar resultats
+                  </button>
+                </nuxt-link>
+                <!-- Afegir botó per a la pàgina de rànquing -->
+                <nuxt-link to="/ranking">
+                  <button class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700">
+                    Rànquing
                   </button>
                 </nuxt-link>
                 <button

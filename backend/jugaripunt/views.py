@@ -1,9 +1,9 @@
 import random
-from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.hashers import make_password, check_password
-from django.http import JsonResponse, HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.crypto import get_random_string
+from django.shortcuts import render, get_object_or_404 # type: ignore
+from django.contrib.auth.hashers import make_password, check_password # type: ignore
+from django.http import JsonResponse, HttpResponse # type: ignore
+from django.views.decorators.csrf import csrf_exempt # type: ignore
+from django.utils.crypto import get_random_string # type: ignore
 import json
 import zipfile 
 import csv, io
@@ -323,23 +323,49 @@ def registrarResultatPartida(request):
         # Dades resultat
         partida_pk = data.get("partida_pk")
         guanyador = data.get("guanyador")
+        
+        # Obtenemos la partida
+        try:
+            partida = Partida.objects.get(pk=partida_pk)  # Obtenir l'objecte Partida
+        except Partida.DoesNotExist:
+            return JsonResponse({"error": "Partida no trobada"}, status=404)
 
-        print(partida_pk)
-        print(guanyador)
+        # Obtenemos los jugadores
+        try:
+            jugador_registre2 = Jugador.objects.get(id=partida.jugador2.id)
+        except Jugador.DoesNotExist:
+            return JsonResponse({"error": "Jugador 2 no trobat"}, status=404)
 
-        partida = Partida.objects.filter(pk=partida_pk)
+        try:
+            jugador_registre1 = Jugador.objects.get(id=partida.jugador1.id)
+        except Jugador.DoesNotExist:
+            return JsonResponse({"error": "Jugador 1 no trobat"}, status=404)
 
-        if(guanyador == 'jugador1'):
-            partida.update(resultat='VJ1')
-        if(guanyador == 'jugador2'):
-            partida.update(resultat='VJ2')
-        if(guanyador == 'EMP'):
-            partida.update(resultat='EMP')
+        # Lógica para registrar el resultado
+        if guanyador == 'jugador1':
+            jugador_registre1.puntuacioLliga = 3
+            jugador_registre1.save()
+            partida.resultat = 'VJ1'
+        elif guanyador == 'jugador2':
+            jugador_registre2.puntuacioLliga = 3
+            jugador_registre2.save()
+            partida.resultat = 'VJ2'
+        elif guanyador == 'EMP':
+            jugador_registre1.puntuacioLliga = 1
+            jugador_registre2.puntuacioLliga = 1
+            jugador_registre1.save()
+            jugador_registre2.save()
+            partida.resultat = 'EMP'
+        else:
+            return JsonResponse({"error": "Guanyador no vàlid"}, status=400)
 
+        # Guardamos los cambios de la partida
+        partida.save()
 
         return JsonResponse({"message": "S'ha desat el resultat amb èxit!"}, status=201)
     else:
         return JsonResponse({"error": "Método no permitido"}, status=405)
+
 
 @csrf_exempt
 def buscar_jugador(request):
@@ -423,3 +449,38 @@ def exportar_resultats(request):
 
     except json.JSONDecodeError:
         return JsonResponse({"error": "Invalid JSON data"}, status=400)
+
+@csrf_exempt
+def getResultatsLliga(request):
+    """Funció per a retornar els resultats d'una lliga específica"""
+
+    if request.method == "GET":
+        lliga_id = request.GET.get('lliga_id')
+        try:
+            lliga = Lliga.objects.get(pk=lliga_id)
+            partides = Partida.objects.filter(lliga=lliga)
+            resultats = []
+            for partida in partides:
+                resultats.append({
+                    'partida_id': partida.pk,
+                    'jugador1': partida.jugador1.nom,
+                    'jugador2': partida.jugador2.nom,
+                    'resultat': partida.get_resultat_display() if partida.resultat else "Pendent"
+                })
+            return JsonResponse(resultats, safe=False)
+        except Lliga.DoesNotExist:
+            return JsonResponse({'error': 'Lliga no trobada.'}, status=404)
+
+@csrf_exempt
+def get_ranking(request):
+    jugadors = Jugador.objects.all().order_by('-puntuacio')
+    ranking = [
+        {
+            'id': jugador.id,
+            'nom': jugador.nom,
+            'cognoms': jugador.cognoms,
+            'puntuacio': jugador.puntuacio
+        }
+        for jugador in jugadors
+    ]
+    return JsonResponse(ranking, safe=False)

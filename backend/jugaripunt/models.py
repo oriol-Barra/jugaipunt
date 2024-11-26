@@ -1,5 +1,5 @@
-from django.contrib.auth.models import User  # Si estás utilizant el model d'usuari de Django
-from django.db import models
+from django.contrib.auth.models import User # type: ignore
+from django.db import models # type: ignore
 
 # Model que representa un jugador
 class Jugador(models.Model):
@@ -12,6 +12,8 @@ class Jugador(models.Model):
     session_token = models.CharField(max_length=255, blank=True, null=True)  # Camp opcional per al token de sessió
     admin = models.BooleanField(default=False)  # per controlar si es o no administrador
     num_federat = models.IntegerField(default=0)  # numero de federat del jugador (numeric)
+    puntuacio = models.IntegerField(default=0)  # Puntuació del jugador (sencer)
+    puntuacioLliga=models.IntegerField(default=0)#puntuació del jugador mentre s'executa la lliga
 
     def __str__(self):
         return f"{self.nom} - {self.cognoms}"  # Retorna el nom del jugador com a representació en cadena
