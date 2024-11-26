@@ -5,7 +5,6 @@
 **/build
 **/dist
 **/node_modules
-/frontend/dockerfile
 
 
 # Backend
@@ -23,3 +22,6 @@ config/
 #coses del docker
 dockerfile
 docker-compose.yml
+Dockerfile.dev.backend
+Dockerfile.dev.frontend
+/Docker/docker-compose.dev.yml
