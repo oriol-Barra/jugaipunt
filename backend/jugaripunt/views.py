@@ -363,6 +363,17 @@ def registrarResultatPartida(request):
 
             # Guardamos los cambios de la partida
             partida.save()
+            lliga_id = partida.lliga_id  # Obtener el ID de la liga asociada a la partida
+            partides_lliga = Partida.objects.filter(id=lliga_id)
+            if not partides_lliga.filter(resultat='').exists():  # Si no hay partidas sin resultado
+                # Determinar el jugador con más puntos
+              lliga=Lliga.objects.get(id=lliga_id)
+              jugadors = lliga.llistaJugadors.all().order_by('-puntuacioLliga')
+              if jugadors.exists():
+                    lliga.resultat = jugadors.first().nom  # Guardamos el nombre del jugador con más puntos
+                    lliga.save()
+
+
 
             return JsonResponse({"message": "S'ha desat el resultat amb èxit!"}, status=201)
         else:

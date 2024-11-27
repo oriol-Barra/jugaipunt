@@ -32,7 +32,12 @@
           </li>
         </ul>
         <div>
-          <LligaTaula v-if="tipusTorneig === 'Lliga'" :lliga-nom="lligaNom" :partides="partides" />
+          <LligaTaula
+            v-if="tipusTorneig === 'Lliga'"
+            :lliga-nom="lligaNom"
+            :partides="partides"
+            :classificacio="jugadors"
+          />
           <QuadreEliminatories v-if="tipusTorneig === 'TorneigEliminatori'" :partides="partides" />
         </div>
       </div>
