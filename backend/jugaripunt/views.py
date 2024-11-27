@@ -233,6 +233,7 @@ def getUser_view(request, jugador_id):
         'email': jugador.email,
         'num_federat': jugador.num_federat,
         'admin': jugador.admin,
+        'puntuacioLliga':jugador.puntuacioLliga
     }
 
     # Listar todas las ligas en las que participa el jugador
@@ -342,29 +343,32 @@ def registrarResultatPartida(request):
             return JsonResponse({"error": "Jugador 1 no trobat"}, status=404)
 
         # Lógica para registrar el resultado
-        if guanyador == 'jugador1':
-            jugador_registre1.puntuacioLliga = 3
-            jugador_registre1.save()
-            partida.resultat = 'VJ1'
-        elif guanyador == 'jugador2':
-            jugador_registre2.puntuacioLliga = 3
-            jugador_registre2.save()
-            partida.resultat = 'VJ2'
-        elif guanyador == 'EMP':
-            jugador_registre1.puntuacioLliga = 1
-            jugador_registre2.puntuacioLliga = 1
-            jugador_registre1.save()
-            jugador_registre2.save()
-            partida.resultat = 'EMP'
+        if partida.resultat !='':
+            if guanyador == 'jugador1':
+                jugador_registre1.puntuacioLliga += 3
+                jugador_registre1.save()
+                partida.resultat = 'VJ1'
+            elif guanyador == 'jugador2':
+                jugador_registre2.puntuacioLliga += 3
+                jugador_registre2.save()
+                partida.resultat = 'VJ2'
+            elif guanyador == 'EMP':
+                jugador_registre1.puntuacioLliga += 1
+                jugador_registre2.puntuacioLliga += 1
+                jugador_registre1.save()
+                jugador_registre2.save()
+                partida.resultat = 'EMP'
+            else:
+                return JsonResponse({"error": "Guanyador no vàlid"}, status=400)
+
+            # Guardamos los cambios de la partida
+            partida.save()
+
+            return JsonResponse({"message": "S'ha desat el resultat amb èxit!"}, status=201)
         else:
-            return JsonResponse({"error": "Guanyador no vàlid"}, status=400)
-
-        # Guardamos los cambios de la partida
-        partida.save()
-
-        return JsonResponse({"message": "S'ha desat el resultat amb èxit!"}, status=201)
+            return JsonResponse({"error": "Método no permitido"}, status=405)
     else:
-        return JsonResponse({"error": "Método no permitido"}, status=405)
+        return JsonResponse({"message":"Aquesta partida ja té un resultat registrat"})
 
 
 @csrf_exempt
@@ -484,3 +488,39 @@ def get_ranking(request):
         for jugador in jugadors
     ]
     return JsonResponse(ranking, safe=False)
+
+@csrf_exempt
+def get_classificacioLliga(request):
+    if request.method == "GET":
+        # Obtenir el ID o nom de la lliga
+        lliga_Nom = request.GET.get('lliga_Nom')
+
+        if not lliga_Nom:
+            return JsonResponse({"error": "Especifica un ID o nom de la lliga"}, status=400)
+
+        try:
+            
+            if lliga_Nom:
+                lliga = Lliga.objects.get(nomLliga=lliga_Nom)
+
+            # Obtenir els jugadors associats a la lliga
+            jugadors = lliga.llistaJugadors.all().order_by('-puntuacioLliga')
+
+            # Construir el ranking
+            ranking = [
+                {
+                    'id': jugador.id,
+                    'nom': jugador.nom,
+                    'cognoms': jugador.cognoms,
+                    'puntuacioLliga': jugador.puntuacioLliga
+                }
+                for jugador in jugadors
+            ]
+
+            return JsonResponse(ranking, safe=False)
+
+        except Lliga.DoesNotExist:
+            return JsonResponse({"error": "Lliga no trobada"}, status=404)
+
+    else:
+        return JsonResponse({"error": "Método no permitido"}, status=405)

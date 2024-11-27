@@ -56,7 +56,8 @@ export default {
     return {
       userData: {},
       partides: [],
-      tipusTorneig: null // Añadimos esta propiedad para manejar el tipo de torneo
+      tipusTorneig: null, // Añadimos esta propiedad para manejar el tipo de torneo
+      jugadors: []
     }
   },
   mounted () {
@@ -83,7 +84,6 @@ export default {
 
     async onLligaClick (lligaNom, tipusTorneig) {
       try {
-        console.log('semenakoooooo')
         const config = useRuntimeConfig()
         const baseURL = config.public.apiBaseUrl
         const response = await axios.get(`${baseURL}/api/partides`)
@@ -93,6 +93,17 @@ export default {
         // eslint-disable-next-line eqeqeq
       } catch (error) {
         console.error('Error al cargar las partidas:', error)
+      }
+      try {
+        const config = useRuntimeConfig()
+        const baseURL = config.public.apiBaseUrl
+        const response = await axios.get(`${baseURL}/api/classificacio/`, {
+          params: { lliga_Nom: lligaNom }
+        })
+        this.jugadors = response.data
+        console.log(response.data)
+      } catch (error) {
+        console.error('error amb els jugadors:', error)
       }
     }
   }

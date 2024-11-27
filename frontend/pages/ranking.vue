@@ -32,12 +32,12 @@ import { useRuntimeConfig } from '#app'
 
 export default {
   name: 'RankingPage',
-  data() {
+  data () {
     return {
       ranking: []
     }
   },
-  async mounted() {
+  async mounted () {
     const config = useRuntimeConfig()
     const baseURL = config.public.apiBaseUrl
     const response = await axios.get(`${baseURL}/api/ranking`)

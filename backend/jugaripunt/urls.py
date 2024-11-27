@@ -16,4 +16,6 @@ urlpatterns = [
     path('exportarResultats', views.exportar_resultats, name="exportarResultats"),
     path('resultatslliga', views.getResultatsLliga, name='getResultatsLliga'), # Ruta per obtenir els resultats d'una lliga
     path('ranking', views.get_ranking, name='get_ranking'), # Ruta per obtenir el ranking
+    path('classificacio/', views.get_classificacioLliga, name='classificacio'), # Ruta per obtenir el ranking
+
 ]
