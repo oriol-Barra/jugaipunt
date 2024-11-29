@@ -138,13 +138,20 @@ export default {
         if (response.status === 201) {
           alert('Resultat registrat correctament!')
         }
-
-        // neteja dades
+      } catch (error) {
+        // Si el error es de tipo 400 (Bad Request), mostramos el mensaje de error del backend
+        if (error.response && error.response.status === 400) {
+          alert(error.response.data.error) // Mostrar el mensaje de error del backend
+        } else {
+          // Si el error es diferente, mostramos un mensaje genérico
+          console.error('Error al enviar resultats:', error)
+          alert('Hubo un problema al intentar enviar los resultados. Intenta de nuevo.')
+        }
+      } finally {
+        // Limpiar los datos sin importar si hubo un error o no
         this.partida_escollida = ''
         this.jugador_guanyador = ''
         this.liga_seleccionada = '' // Limpiar la liga seleccionada
-      } catch (error) {
-        console.error('Error al enviar resultats:', error)
       }
     },
 

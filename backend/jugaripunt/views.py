@@ -342,8 +342,9 @@ def registrarResultatPartida(request):
         except Jugador.DoesNotExist:
             return JsonResponse({"error": "Jugador 1 no trobat"}, status=404)
 
-        # Lógica para registrar el resultado
-        if partida.resultat !='':
+        # Comprobamos si la partida ya tiene resultado
+        if not partida.resultat or partida.resultat == '':
+            # Lógica para registrar el resultado
             if guanyador == 'jugador1':
                 jugador_registre1.puntuacioLliga += 3
                 jugador_registre1.save()
@@ -364,22 +365,40 @@ def registrarResultatPartida(request):
             # Guardamos los cambios de la partida
             partida.save()
             lliga_id = partida.lliga_id  # Obtener el ID de la liga asociada a la partida
-            partides_lliga = Partida.objects.filter(id=lliga_id)
-            if not partides_lliga.filter(resultat='').exists():  # Si no hay partidas sin resultado
-                # Determinar el jugador con más puntos
-              lliga=Lliga.objects.get(id=lliga_id)
-              jugadors = lliga.llistaJugadors.all().order_by('-puntuacioLliga')
-              if jugadors.exists():
-                    lliga.resultat = jugadors.first().nom  # Guardamos el nombre del jugador con más puntos
+            partides_lliga = Partida.objects.filter(lliga=partida.lliga)
+
+            # Si no hay partidas sin resultado, actualizamos el resultado de la liga
+            if not partides_lliga.filter(resultat__isnull=True).exists() and not partides_lliga.filter(resultat='').exists():
+                lliga = Lliga.objects.get(id=lliga_id)
+                jugadors = lliga.llistaJugadors.all().order_by('-puntuacioLliga')
+                if jugadors.exists():
+                    lliga.resultat = [
+                        {"nom": jugador.nom, "cognoms": jugador.cognoms, "puntuacioLliga": jugador.puntuacioLliga}
+                        for jugador in jugadors
+                    ]
+                    # Actualizamos las puntuaciones de los primeros dos jugadores
+                    jugador_1er = jugadors[0]
+                    jugador_1er.puntuacio += 5
+                    jugador_1er.save()
+
+                    jugador_2on = jugadors[1]
+                    jugador_2on.puntuacio += 3
+                    jugador_2on.save()
+
                     lliga.save()
 
-
+                # Reseteamos las puntuacionesLliga a 0
+                for jugador in lliga.llistaJugadors.all():
+                    jugador.puntuacioLliga = 0
+                    jugador.save()
 
             return JsonResponse({"message": "S'ha desat el resultat amb èxit!"}, status=201)
+
         else:
-            return JsonResponse({"error": "Método no permitido"}, status=405)
+            return JsonResponse({"error": "Aquesta partida ja té un resultat registrat"}, status=400)
     else:
-        return JsonResponse({"message":"Aquesta partida ja té un resultat registrat"})
+        return JsonResponse({"error": "Método no permitido"}, status=405)
+
 
 
 @csrf_exempt
@@ -513,22 +532,28 @@ def get_classificacioLliga(request):
             
             if lliga_Nom:
                 lliga = Lliga.objects.get(nomLliga=lliga_Nom)
-
+                partides=Partida.objects.filter(lliga=lliga)
             # Obtenir els jugadors associats a la lliga
-            jugadors = lliga.llistaJugadors.all().order_by('-puntuacioLliga')
+            if partides.filter(resultat__isnull=True).exists() or partides.filter(resultat='').exists():
+                # Si hay partidas sin resultado, construir y devolver el ranking basado en los jugadores
+                jugadors = lliga.llistaJugadors.all().order_by('-puntuacioLliga')
 
-            # Construir el ranking
-            ranking = [
-                {
-                    'id': jugador.id,
-                    'nom': jugador.nom,
-                    'cognoms': jugador.cognoms,
-                    'puntuacioLliga': jugador.puntuacioLliga
-                }
-                for jugador in jugadors
-            ]
+                ranking = [
+                    {
+                        'id': jugador.id,
+                        'nom': jugador.nom,
+                        'cognoms': jugador.cognoms,
+                        'puntuacioLliga': jugador.puntuacioLliga
+                    }
+                    for jugador in jugadors
+                ]
+                return JsonResponse(ranking, safe=False)
 
-            return JsonResponse(ranking, safe=False)
+            else:
+                # Si todas las partidas tienen resultado, usamos directamente el lliga.resultat
+                ranking = lliga.resultat  # El resultado ya es una lista de diccionarios
+
+                return JsonResponse(ranking, safe=False)
 
         except Lliga.DoesNotExist:
             return JsonResponse({"error": "Lliga no trobada"}, status=404)

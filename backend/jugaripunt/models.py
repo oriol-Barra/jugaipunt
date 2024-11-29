@@ -31,7 +31,7 @@ class Lliga(models.Model):
     tipusTorneig = models.CharField(max_length=20, choices=TIPUS_TORNEIG_CHOICES, default='Lliga')  # 'liga' o 'torneo'
     usuariAdmin = models.ForeignKey(Jugador, on_delete=models.CASCADE)  # ID del usuario administrador
     llistaJugadors = models.ManyToManyField(Jugador, related_name="lligues")  # Relación con jugadores
-    resultat = models.CharField(max_length=100, blank=True, null=True)  # ID del ganador de la liga (opcional)
+    resultat = models.JSONField(blank=True, null=True)  # Cambiado a JSONField para almacenar listas o diccionarios
 
     def __str__(self):
         return f"{self.nomLliga} - {self.dataInici} a {self.dataFi}"
