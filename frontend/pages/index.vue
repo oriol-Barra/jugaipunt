@@ -19,6 +19,12 @@
 <script>
 export default {
   name: 'HomePage',
+  /**
+   * @name index
+   * @description Pàgina principal del portal "Jugar i Punt".
+   * Aquesta pàgina ofereix un botó per accedir a la pàgina de registre.
+   * És la primera pàgina visible per als usuaris no registrats.
+   */
   data () {
     return {
       // isAuthenticated: false
@@ -28,6 +34,14 @@ export default {
     // this.checkAuthentication()
   },
   methods: {
+    /**
+     * @method checkAuthentication
+     * @description Comprova si el token d'autenticació existeix a `localStorage`.
+     * Si existeix, marca l'usuari com autenticat (isAuthenticated = true),
+     * de no ser així, el marca com no autenticat.
+     *
+     * @returns {void} No retorna cap valor. Modifica l'estat de `isAuthenticated`.
+     */
     checkAuthentication () {
       // Comprovar si existeix el token a localStorage
       // const token = localStorage.getItem('authToken')

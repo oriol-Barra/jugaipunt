@@ -68,18 +68,42 @@ import axios from 'axios'
 import { useRuntimeConfig } from '#app'
 
 export default {
+  /**
+   * @name afegeixjugadors
+   * @description pàgina per cercar jugadors, afegir-los a una lliga i registrar el torneig.
+   */
   data () {
     return {
+      /**
+       * @property {string} nomJugador - Nom del jugador a cercar.
+       */
       nomJugador: '',
+      /**
+       * @property {Array} resultats - Llista de jugadors trobats durant la cerca.
+       */
       resultats: [],
+      /**
+       * @property {Object|null} jugadorSeleccionat - Jugador seleccionat de la llista.
+       */
       jugadorSeleccionat: null,
+      /**
+       * @property {Array} jugadorsAfegits - Llista de jugadors afegits a la lliga.
+       */
       jugadorsAfegits: [],
+      /**
+       * @property {number} numJugadors - Nombre de jugadors necessaris per a la lliga.
+       */
       numJugadors: 0, // Inicializa numJugadors
+      /**
+       * @property {string} usuari - ID de l'usuari actual obtingut de localStorage.
+       */
       usuari: ''
     }
   },
   mounted () {
-    // Rebem les dades desde crealliga.vue
+    /**
+     * @description Inicialitza les dades rebudes des de la ruta `crealliga`.
+     */
     this.numJugadors = this.$route.query.numJugadors
     this.nomLliga = this.$route.query.nomLliga
     this.dataInici = this.$route.query.dataInici
@@ -90,6 +114,10 @@ export default {
   },
 
   methods: {
+    /**
+     * @method buscarJugador
+     * @description Cerca jugadors a la base de dades pel seu nom.
+     */
     async buscarJugador () {
       // Si el camp de busqueda està buit neteja els resultats
       if (!this.nomJugador) {
@@ -109,6 +137,11 @@ export default {
         console.error('Error en la cerca:', error)
       }
     },
+    /**
+     * @method seleccionarJugador
+     * @description Selecciona un jugador de la llista de resultats.
+     * @param {Object} jugador - L'objecte jugador seleccionat.
+     */
     seleccionarJugador (jugador) {
       // Selecciona el jugador fent clic damunt
       this.jugadorSeleccionat = jugador
@@ -127,6 +160,10 @@ export default {
         alert("tots els jugadors ja han sigut registrats, si desitjes donar d'alta la lliga prem el botó")
       }
     },
+    /**
+     * @method afegirLliga
+     * @description Envia les dades de la lliga i els jugadors seleccionats al backend.
+     */
     async afegirLliga () {
       if (!this.jugadorSeleccionat || this.jugadorsAfegits.length < parseInt(this.numJugadors)) {
         alert('Selecciona tots els jugadors requerits abans de crear la lliga.')

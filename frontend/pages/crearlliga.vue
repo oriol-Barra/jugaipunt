@@ -85,16 +85,40 @@
 
 <script>
 export default {
+  /**
+   * @name crealliga
+   * @description pàgina per registrar una nova lliga o torneig. Inclou formulari amb els camps de la lliga.
+   */
   data () {
     return {
+      /**
+       * @property {string} nomLliga - Nom de la lliga o torneig.
+       */
       nomLliga: '',
+      /**
+       * @property {string} dataInici - Data d'inici de la lliga o torneig.
+       */
       dataInici: '',
+      /**
+       * @property {string} dataFi - Data de finalització de la lliga o torneig.
+       */
       dataFi: '',
+      /**
+       * @property {string} tipusTorneig - Tipus de torneig (Lliga o Torneig Eliminatori).
+       */
       tipusTorneig: '',
+      /**
+       * @property {number} numJugadors - Nombre de jugadors que participaran en la lliga o torneig.
+       */
       numJugadors: 0
     }
   },
   methods: {
+    /**
+     * @method enviarDades
+     * @description Envia les dades del formulari de front a front i realitza la validació abans de redirigir a la pàgina per afegir jugadors.
+     * Si es tracta d'un torneig eliminatori, es comprova que el nombre de jugadors sigui múltiple de 4.
+     */
     enviarDades () { // Cambiado a enviarDades para coincidir con @submit.prevent
       try {
         // Reinicialitzar el formulari

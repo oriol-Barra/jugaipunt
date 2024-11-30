@@ -49,6 +49,10 @@ import axios from 'axios' // Importa Axios per a realizar sol·licituds
 import { useRuntimeConfig } from '#app'
 
 export default {
+  /**
+   * @name login
+   * @description pàgina que permet a l'usuari connectar-se amb les seves credencials al sistema .
+   */
   data () {
     return {
       email: '',
@@ -56,6 +60,16 @@ export default {
     }
   },
   methods: {
+  /**
+   * @method submit
+   * @description Mètode que s'encarrega de gestionar el procés de login d'un usuari.
+   * Realitza una sol·licitud POST al servidor amb les credencials d'usuari (email i contrasenya),
+   * i si la resposta és correcta (status 200), guarda la informació de l'usuari al `localStorage`
+   * (incloent el token d'autenticació, ID, nom i estat d'admin), neteja els camps del formulari
+   * i redirigeix a la pàgina de l'usuari (`/dashboardPage`).
+   * En cas d'error, es mostra un missatge d'error a l'usuari.
+   * @returns {void} No retorna cap valor.
+   */
     async submit () {
       try {
         const config = useRuntimeConfig()

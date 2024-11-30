@@ -52,6 +52,13 @@ export default {
     this.buscarLligues()
   },
   methods: {
+    /**
+     * @method buscarLligues
+     * @description Recupera la llista de lligues disponibles a partir del backend i les afegeix
+     * a l'array `lligues` per mostrar-les al formulari de selecció.
+     *
+     * @returns {void} No retorna cap valor. Actualitza l'array `lligues` amb les dades de les lligues.
+     */
     /** Busquem les lligues disponibles i les afoegim al llistat */
     async buscarLligues () {
       try {
@@ -68,20 +75,32 @@ export default {
         console.error('Error en la cerca:', error)
       }
     },
+    // eslint-disable-next-line require-await
+    /**
+     * @method descarregarResultats
+     * @description Gestiona la descàrrega dels resultats de la lliga seleccionada.
+     * Envia la sol·licitud per obtenir els resultats de la lliga i els desa en un arxiu ZIP
+     * que es descarrega automàticament al dispositiu de l'usuari.
+     *
+     * @returns {void} No retorna cap valor. Descarrega un arxiu ZIP amb els resultats.
+     */
+    // eslint-disable-next-line require-await
     async descarregarResultats () {
       try {
         const config = useRuntimeConfig()
         const baseURL = config.public.apiBaseUrl
 
-        const method = 'GET';
+        const method = 'GET'
+        // eslint-disable-next-line semi
         const url = `${baseURL}/api/exportarResultats`;
 
         axios
           .request({
             url,
             method,
-            responseType: 'blob', //important
+            responseType: 'blob', // important
             params: {
+              // eslint-disable-next-line comma-dangle
               lliga_id: this.lliga_escollida,
             }
           })
@@ -89,14 +108,14 @@ export default {
             const downloadUrl = window.URL.createObjectURL(new Blob([data]))
             const link = document.createElement('a')
             link.href = downloadUrl
-            link.setAttribute('download', 'file.zip') //any other extension
+            link.setAttribute('download', 'file.zip') // any other extension
             document.body.appendChild(link)
             link.click()
             link.remove()
-          });
-        } catch (error) {
-          console.error('Error al enviar resultats:', error)
-        }
+          })
+      } catch (error) {
+        console.error('Error al enviar resultats:', error)
+      }
     }
   }
 }

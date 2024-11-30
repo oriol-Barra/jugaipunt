@@ -57,11 +57,34 @@ export default {
     QuadreEliminatories,
     LligaTaula
   },
+  /**
+   * @name DashboardPage
+   * @description Component que mostra les dades de l'usuari i les lligues on està inscrit.
+   */
   data () {
     return {
+      /**
+       * @property {Object} userData - Objecte amb les dades de l'usuari.
+       * @property {string} userData.nom - Nom de l'usuari.
+       * @property {string} userData.cognoms - Cognoms de l'usuari.
+       * @property {string} userData.email - Correu electrònic de l'usuari.
+       * @property {number} userData.edat - Edat de l'usuari.
+       * @property {number} userData.num_federat - Número de federat de l'usuari.
+       * @property {boolean} userData.admin - Indica si l'usuari és administrador.
+       * @property {Array} userData.lligues - Llistat de lligues a les quals l'usuari està inscrit.
+       */
       userData: {},
+      /**
+       * @property {Array} partides - Llistat de les partides d'una lliga específica.
+       */
       partides: [],
+      /**
+       * @property {string} tipusTorneig - Tipus de torneig seleccionat (Lliga o TorneigEliminatori).
+       */
       tipusTorneig: null, // Añadimos esta propiedad para manejar el tipo de torneo
+      /**
+       * @property {Array} jugadors - Llistat de jugadors de la classificació d'una lliga.
+       */
       jugadors: []
     }
   },
@@ -69,6 +92,10 @@ export default {
     this.getUserData()
   },
   methods: {
+    /**
+     * @method getUserData
+     * @description Obté les dades de l'usuari des de l'API.
+     */
     async getUserData () {
       try {
         // eslint-disable-next-line camelcase
@@ -86,7 +113,12 @@ export default {
         console.error('No s\'han pogut carregar les dades de l\'usuari', error)
       }
     },
-
+    /**
+     * @method onLligaClick
+     * @description Gestiona el clic en una lliga per obtenir les partides i la classificació dels jugadors.
+     * @param {string} lligaNom - Nom de la lliga seleccionada.
+     * @param {string} tipusTorneig - Tipus de torneig de la lliga seleccionada (Lliga o TorneigEliminatori).
+     */
     async onLligaClick (lligaNom, tipusTorneig) {
       try {
         const config = useRuntimeConfig()

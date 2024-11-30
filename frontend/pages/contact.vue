@@ -77,6 +77,10 @@
 
 <script>
 export default {
+  /**
+   * @name contact
+   * @description pàgina que ofereix a l'usuari l'opció de posar-se en contacte.
+   */
   data () {
     return {
       name: '',

@@ -48,9 +48,19 @@ import axios from 'axios'
 import { useRuntimeConfig } from '#app'
 
 export default {
+  /**
+ * @name ResultatsPartides
+ * @description pàgina que gestiona la selecció de partides, jugadors i resultats per a una lliga.
+ * Permet seleccionar una lliga, una partida, un guanyador i enviar els resultats.
+ */
   name: 'ResultatsPartides',
 
   data () {
+  /**
+   * @data
+   * @description Dades reactivas per emmagatzemar la selecció de la lliga, partida, guanyador,
+   * i les llistes de partides i jugadors.
+   */
     return {
       partida_escollida: undefined,
       jugador_guanyador: undefined,
@@ -64,7 +74,11 @@ export default {
     this.buscarLligues() // Llamar a la función para buscar las ligas
   },
   methods: {
-    /** Busquem les lligues disponibles i les afegim al llistat */
+  /**
+   * @method buscarLligues
+   * @description Realitza una sol·licitud a l'API per obtenir les lligues disponibles i les afegeix a la
+   * llista `lligues`. Aquesta funció es crida quan el component es carrega.
+   */
     async buscarLligues () {
       try {
         const config = useRuntimeConfig()
@@ -77,7 +91,11 @@ export default {
         console.error('Error en la cerca de ligas:', error)
       }
     },
-    /** Busquem les partides disponibles i les afegim al llistat */
+    /**
+   * @method buscarPartides
+   * @description Realitza una sol·licitud a l'API per obtenir les partides disponibles per a la lliga seleccionada
+   * i les afegeix a la llista `partides`.
+   */
     async buscarPartides () {
       try {
         const config = useRuntimeConfig()
@@ -103,7 +121,10 @@ export default {
       }
     },
 
-    /** En funció de la partida escollida, mostrem les opcions de resultats */
+    /**
+   * @method onSelectPartida
+   * @description En funció de la partida seleccionada, mostra les opcions disponibles per al guanyador de la partida.
+   */
     async onSelectPartida () {
       try {
         const config = useRuntimeConfig()
@@ -125,7 +146,11 @@ export default {
       }
     },
 
-    /** Enviem els resultats, incloent la liga seleccionada */
+    /**
+   * @method enviarResultats
+   * @description Envia els resultats seleccionats a l'API per ser registrats, incloent la partida escollida
+   * i el guanyador. Mostra un missatge d'èxit o error en funció de la resposta.
+   */
     async enviarResultats () {
       try {
         const config = useRuntimeConfig()
@@ -155,7 +180,11 @@ export default {
       }
     },
 
-    /** Obtenim els resultats per a una lliga específica */
+    /**
+   * @method getResultatsLliga
+   * @description Obté els resultats per a una lliga específica cridant a l'API i passant la lliga seleccionada
+   * com a paràmetre.
+   */
     async getResultatsLliga () {
       try {
         const config = useRuntimeConfig()

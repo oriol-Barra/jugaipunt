@@ -31,12 +31,21 @@ import axios from 'axios'
 import { useRuntimeConfig } from '#app'
 
 export default {
+  /**
+   * @name rankingpage
+   * @description pàgina que mostra els usuaris ordenats per puntuacions.
+   */
   name: 'RankingPage',
   data () {
     return {
       ranking: []
     }
   },
+  /**
+   * @method mounted
+   * @description Mètode que s'executa quan el component es munta. Realitza una sol·licitud GET a l'API per obtenir el rànquing de jugadors.
+   * Aquesta informació es desa a la propietat `ranking`, la qual es mostra a la taula.
+   */
   async mounted () {
     const config = useRuntimeConfig()
     const baseURL = config.public.apiBaseUrl

@@ -120,7 +120,18 @@ import axios from 'axios' // Importa Axios per a realizar sol·licituds
 import { useRuntimeConfig } from '#app'
 
 export default {
+  /**
+ * @name RegistreUsuari
+ * @description pàgina que gestiona el registre d'un nou usuari en el sistema. Permet a l'usuari
+ * introduir les seves dades, validar les contrasenyes i enviar les dades al servidor per completar
+ * el registre.
+ */
   data () {
+    /**
+   * @data
+   * @description Dades reactives per emmagatzemar les entrades de l'usuari durant el registre.
+   * Inclou informació com el correu electrònic, contrasenya, nom, cognoms, etc.
+   */
     return {
       email: '',
       password: '',
@@ -133,6 +144,12 @@ export default {
     }
   },
   methods: {
+    /**
+   * @method submit
+   * @description Mètode que s'executa quan l'usuari envia el formulari de registre.
+   * Comprova que les contrasenyes coincideixen i envia les dades al servidor per registrar l'usuari.
+   * Si el registre és exitós, es reseteja el formulari.
+   */
     async submit () {
       // Validar que las contraseñas coinciden
       if (this.password !== this.passwordRepeat) {
